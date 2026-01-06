@@ -85,9 +85,9 @@ export default function Home() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-8 text-zinc-900">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] mb-8 text-zinc-900">
             <span className="block">The Review Engine</span>
-            <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent pb-2">
               Powering Commerce
             </span>
           </h1>
