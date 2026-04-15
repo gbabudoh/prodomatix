@@ -12,6 +12,7 @@ import { MarketStats } from "@/components/market/market-stats";
 import { AdFlowBillboard } from "@/components/market/adflow-billboard";
 import { Button } from "@/components/shared/button";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { Footer } from "@/components/shared/footer";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { LogIn, UserPlus, LayoutDashboard, User } from "lucide-react";
@@ -145,27 +146,7 @@ export default function TradingFloor() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 mt-16">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-emerald-400 to-teal-500 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">P</span>
-              </div>
-              <span className="text-gray-400 text-sm">
-                Prodomatix © 2026 — The Stock Market of Sentiment
-              </span>
-            </div>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
-              <span>Market Hours: 24/7</span>
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                Live Trading
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
