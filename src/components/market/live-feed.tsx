@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useMarketStore } from "@/store/market-store";
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { formatRelativeTime, countryToFlag } from "@/lib/utils";
@@ -8,6 +9,12 @@ import { MessageSquare, TrendingUp, TrendingDown } from "lucide-react";
 
 export function LiveFeed() {
   const { recentStatements } = useMarketStore();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering time after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Card variant="glass" className="h-full">
@@ -72,7 +79,7 @@ export function LiveFeed() {
                 &ldquo;{statement.statement}&rdquo;
               </p>
               <p className="text-gray-600 text-xs mt-2">
-                {formatRelativeTime(statement.createdAt)}
+                {mounted ? formatRelativeTime(statement.createdAt) : "..."}
               </p>
             </motion.div>
           ))}
