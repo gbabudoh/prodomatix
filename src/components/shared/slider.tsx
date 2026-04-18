@@ -12,6 +12,7 @@ interface SliderProps
   step?: number;
   onChange: (value: number) => void;
   showValue?: boolean;
+  showLabel?: boolean;
   colorScale?: boolean;
 }
 
@@ -23,6 +24,7 @@ export function Slider({
   step = 1,
   onChange,
   showValue = true,
+  showLabel = true,
   colorScale = true,
   className,
   ...props
@@ -38,15 +40,15 @@ export function Slider({
 
   return (
     <div className={cn("space-y-2", className)}>
-      {(label || showValue) && (
+      {showLabel && (label || showValue) && (
         <div className="flex justify-between items-center">
           {label && (
-            <label className="text-sm font-medium text-gray-300">{label}</label>
+            <label className="text-sm font-medium text-[var(--text-secondary)]">{label}</label>
           )}
           {showValue && (
             <span
               className={cn(
-                "text-sm font-bold tabular-nums",
+                "text-sm font-bold tabular-nums font-mono",
                 value <= 3 && "text-red-400",
                 value > 3 && value <= 5 && "text-orange-400",
                 value > 5 && value <= 7 && "text-yellow-400",
@@ -59,7 +61,7 @@ export function Slider({
         </div>
       )}
       <div className="relative">
-        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+        <div className="h-2.5 bg-[var(--bg-tertiary)] rounded-full overflow-hidden border border-[var(--border-primary)]">
           <div
             className={cn(
               "h-full rounded-full transition-all duration-150 bg-gradient-to-r",
@@ -79,14 +81,16 @@ export function Slider({
           {...props}
         />
         <div
-          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg border-2 border-gray-900 pointer-events-none transition-all duration-150"
-          style={{ left: `calc(${percentage}% - 8px)` }}
+          className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-lg border-2 border-[var(--bg-primary)] pointer-events-none transition-all duration-150"
+          style={{ left: `calc(${percentage}% - 10px)` }}
         />
       </div>
-      <div className="flex justify-between text-xs text-gray-500">
-        <span>{min}</span>
-        <span>{max}</span>
-      </div>
+      {showLabel && (
+        <div className="flex justify-between text-xs text-[var(--text-muted)]">
+          <span>{min}</span>
+          <span>{max}</span>
+        </div>
+      )}
     </div>
   );
 }
