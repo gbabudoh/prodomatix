@@ -1,18 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import type { Product } from "@/db/schema";
-import { Card } from "@/components/shared/card";
 import { motion } from "framer-motion";
 import {
   TrendingUp,
   TrendingDown,
-  Minus,
   Users,
   Award,
   Sparkles,
-  ChevronRight,
+  ArrowUpRight,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -28,121 +25,139 @@ export function ProdoCard({ product, index = 0 }: ProdoCardProps) {
   const isPositive = priceChange > 0;
   const isNegative = priceChange < 0;
 
-  // Score color based on value
   const getScoreColor = (score: number) => {
     if (score >= 8) return "text-emerald-400";
-    if (score >= 6) return "text-yellow-400";
+    if (score >= 6) return "text-amber-400";
     if (score >= 4) return "text-orange-400";
     return "text-red-400";
   };
 
-  const getScoreBg = (score: number) => {
-    if (score >= 8) return "from-emerald-500/20 to-emerald-500/5";
-    if (score >= 6) return "from-yellow-500/20 to-yellow-500/5";
-    if (score >= 4) return "from-orange-500/20 to-orange-500/5";
-    return "from-red-500/20 to-red-500/5";
+  const getScoreBgColor = (score: number) => {
+    if (score >= 8) return "bg-emerald-500/10 border-emerald-500/20";
+    if (score >= 6) return "bg-amber-500/10 border-amber-500/20";
+    if (score >= 4) return "bg-orange-500/10 border-orange-500/20";
+    return "bg-red-500/10 border-red-500/20";
+  };
+
+  // Generate sparkline points
+  const generateSparkline = () => {
+    const basePoints = [45, 42, 48, 40, 52, 45, 50];
+    if (isPositive) basePoints[basePoints.length - 1] = 30;
+    if (isNegative) basePoints[basePoints.length - 1] = 65;
+    return basePoints.map((p, i) => `${i * 16},${p}`).join(" ");
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      transition={{ delay: index * 0.05, duration: 0.3 }}
     >
       <Link href={`/product/${product.id}`}>
-        <Card
-          hover
+        <div
           className={cn(
-            "relative overflow-hidden cursor-pointer group",
-            product.isAdflowPromoted &&
-              "ring-1 ring-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-transparent"
+            "relative p-4 rounded-2xl border transition-all duration-300 cursor-pointer group",
+            "bg-[var(--bg-secondary)] border-[var(--border-primary)]",
+            "hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5",
+            "hover:-translate-y-0.5",
+            product.isAdflowPromoted && "border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-transparent"
           )}
         >
-          {/* Promoted badge */}
+          {/* Promoted Badge */}
           {product.isAdflowPromoted && (
-            <div className="absolute top-0 right-0 px-2 py-1 bg-yellow-500/20 rounded-bl-lg">
-              <div className="flex items-center gap-1 text-yellow-400 text-xs font-medium">
-                <Sparkles className="w-3 h-3" />
-                HOT
-              </div>
+            <div className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full shadow-lg">
+              <Sparkles className="w-3 h-3 text-white" />
+              <span className="text-[10px] font-bold text-white uppercase">Featured</span>
             </div>
           )}
 
-          {/* IPO badge */}
-          {product.status === "ipo" && (
-            <div className="absolute top-0 left-0 px-2 py-1 bg-blue-500/20 rounded-br-lg">
-              <span className="text-blue-400 text-xs font-bold">IPO</span>
-            </div>
-          )}
-
-          <div className="flex items-start justify-between gap-4">
-            {/* Left: Product info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono font-bold text-emerald-400 text-sm">
-                  {product.ticker}
-                </span>
-                {product.hasDividendBadge && (
-                  <Award className="w-4 h-4 text-emerald-400" />
-                )}
-              </div>
-              <h3 className="font-semibold text-white truncate group-hover:text-emerald-400 transition-colors">
-                {product.name}
-              </h3>
-              <p className="text-sm text-gray-500 truncate">
-                {product.category}
-              </p>
-            </div>
-
-            {/* Right: Prodo Score display */}
-            <div
-              className={cn(
-                "flex flex-col items-end p-3 rounded-lg bg-gradient-to-br",
-                getScoreBg(currentPrice)
+          {/* Header */}
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-bold text-emerald-400 text-sm px-2 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">
+                {product.ticker}
+              </span>
+              {product.hasDividendBadge && (
+                <div className="p-1 bg-emerald-500/10 rounded-md" title="Trust Dividend">
+                  <Award className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
               )}
-            >
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 mb-0.5">
+              {product.status === "ipo" && (
+                <span className="text-[10px] font-bold text-blue-400 px-2 py-0.5 bg-blue-500/10 rounded-md border border-blue-500/20 uppercase">
+                  IPO
+                </span>
+              )}
+            </div>
+            
+            {/* Mini Sparkline */}
+            <div className="w-16 h-8 opacity-40 group-hover:opacity-100 transition-opacity">
+              <svg width="100%" height="100%" viewBox="0 0 100 80" preserveAspectRatio="none">
+                <polyline
+                  fill="none"
+                  stroke={isPositive ? "#10b981" : isNegative ? "#ef4444" : "#6b7280"}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  points={generateSparkline()}
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Product Info */}
+          <div className="mb-4">
+            <h3 className="text-base font-semibold text-[var(--text-primary)] truncate group-hover:text-emerald-400 transition-colors">
+              {product.name}
+            </h3>
+            <p className="text-xs text-[var(--text-muted)] truncate mt-0.5">
+              {product.category}
+            </p>
+          </div>
+
+          {/* Score Display */}
+          <div className={cn(
+            "flex items-center justify-between p-3 rounded-xl border",
+            getScoreBgColor(currentPrice)
+          )}>
+            <div>
+              <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-medium">
                 Prodo Score
               </span>
-              <span
-                className={cn(
-                  "text-2xl font-bold font-mono",
-                  getScoreColor(currentPrice)
-                )}
-              >
+              <div className={cn("text-2xl font-bold font-mono tabular-nums", getScoreColor(currentPrice))}>
                 {currentPrice.toFixed(2)}
-              </span>
-              <div
-                className={cn(
-                  "flex items-center gap-1 text-sm font-medium",
-                  isPositive && "text-emerald-400",
-                  isNegative && "text-red-400",
-                  !isPositive && !isNegative && "text-gray-500"
-                )}
-              >
-                {isPositive && <TrendingUp className="w-3 h-3" />}
-                {isNegative && <TrendingDown className="w-3 h-3" />}
-                {!isPositive && !isNegative && <Minus className="w-3 h-3" />}
-                <span>
-                  {isPositive && "+"}
-                  {priceChange.toFixed(2)} ({priceChangePercent.toFixed(1)}%)
-                </span>
               </div>
+            </div>
+            
+            <div className={cn(
+              "text-right",
+              isPositive && "text-emerald-400",
+              isNegative && "text-red-400",
+              !isPositive && !isNegative && "text-[var(--text-muted)]"
+            )}>
+              <div className="flex items-center justify-end gap-1 text-sm font-bold font-mono">
+                {isPositive && <TrendingUp className="w-4 h-4" />}
+                {isNegative && <TrendingDown className="w-4 h-4" />}
+                <span>{isPositive && "+"}{priceChangePercent.toFixed(1)}%</span>
+              </div>
+              <span className="text-xs opacity-70 font-mono">
+                {isPositive && "+"}{priceChange.toFixed(2)}
+              </span>
             </div>
           </div>
 
-          {/* Bottom stats */}
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-800">
-            <div className="flex items-center gap-1 text-gray-500 text-sm">
-              <Users className="w-4 h-4" />
-              <span>{formatNumber(product.totalRatings || 0)} ratings</span>
+          {/* Footer */}
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-[var(--border-primary)]">
+            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
+              <Users className="w-3.5 h-3.5" />
+              <span className="font-medium">{formatNumber(product.totalRatings || 0)} ratings</span>
             </div>
-            <div className="flex items-center gap-1 text-gray-400 text-sm group-hover:text-emerald-400 transition-colors">
-              <span>Rate now</span>
-              <ChevronRight className="w-4 h-4" />
+            
+            <div className="flex items-center gap-1 text-xs font-medium text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span>View Details</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </div>
           </div>
-        </Card>
+        </div>
       </Link>
     </motion.div>
   );

@@ -12,15 +12,22 @@
   --foreground-secondary: #9ca3af;
   --foreground-muted: #6b7280;
   
-  /* Surface colors */
-  --surface: rgba(17, 24, 39, 0.5);
-  --surface-hover: rgba(31, 41, 55, 0.5);
-  --surface-active: rgba(55, 65, 81, 0.5);
+  /* New semantic variables */
+  --bg-primary: #030712;
+  --bg-secondary: #0d1117;
+  --bg-tertiary: #161b22;
   
   /* Border colors */
   --border: #1f2937;
   --border-hover: #374151;
   --border-active: #4b5563;
+  --border-primary: rgba(255, 255, 255, 0.08);
+  --border-secondary: rgba(255, 255, 255, 0.15);
+  
+  /* Surface colors */
+  --surface: rgba(17, 24, 39, 0.5);
+  --surface-hover: rgba(31, 41, 55, 0.5);
+  --surface-active: rgba(55, 65, 81, 0.5);
   
   /* Card colors */
   --card-bg: rgba(17, 24, 39, 0.6);
@@ -56,15 +63,31 @@
   /* Text on dark */
   --text-primary: #ffffff;
   --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --text-disabled: #6b7280;
+  --text-muted: #6b7280;
+  --text-disabled: #4b5563;
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+  /* Spacing Tokens (Strict 8px Grid) */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem;  /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem;    /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem;  /* 24px */
+  --space-8: 2rem;    /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem;   /* 48px */
+  --space-16: 4rem;   /* 64px */
+
+  /* Shadows (Enterprise - Subtle) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.2);
   
+  /* Borders (Enterprise - Subtle) */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-emerald: rgba(16, 185, 129, 0.2);
+
   color-scheme: dark;
 }
 
@@ -76,6 +99,15 @@
   --foreground: #1a202c;
   --foreground-secondary: #4a5568;
   --foreground-muted: #718096;
+  
+  /* New semantic variables */
+  --bg-primary: #fafbfc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  
+  /* Border colors */
+  --border-primary: rgba(0, 0, 0, 0.08);
+  --border-secondary: rgba(0, 0, 0, 0.15);
   
   /* Surface colors - warm whites */
   --surface: rgba(255, 255, 255, 0.9);
@@ -156,8 +188,11 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5; /* Tightened for density */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Light theme - subtle warm gradient background */
@@ -277,25 +312,41 @@ label[for],
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Glow effects */
-.glow-emerald {
-  box-shadow: var(--shadow-glow);
+/* Mesh background utility */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(20, 184, 166, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
-.glow-red {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+/* Grain texture overlay */
+.bg-grain {
+  position: relative;
 }
 
-/* Number animations */
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.bg-grain::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 100;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Enterprise Subtle Border */
+.border-subtle {
+  border: 1px solid var(--border-subtle);
+}
+
+.border-emerald-subtle {
+  border: 1px solid var(--border-emerald);
 }
 
 .animate-count-up {

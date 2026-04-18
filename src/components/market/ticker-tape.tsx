@@ -3,7 +3,7 @@
 import { useMarketStore } from "@/store/market-store";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Minus, Sparkles } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Sparkles, Award } from "lucide-react";
 
 export function TickerTape() {
   const { tickerItems } = useMarketStore();
@@ -12,55 +12,61 @@ export function TickerTape() {
   const items = [...tickerItems, ...tickerItems];
 
   return (
-    <div className="relative overflow-hidden bg-gray-950 border-b border-gray-800">
-      {/* Gradient overlays for fade effect */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-950 to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-950 to-transparent z-10" />
+    <div className="relative overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
+      {/* Gradient overlays */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[var(--bg-secondary)] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[var(--bg-secondary)] to-transparent z-10 pointer-events-none" />
 
       <motion.div
-        className="flex py-2"
+        className="flex py-2.5"
         animate={{ x: [0, -50 * tickerItems.length] }}
         transition={{
           x: {
             repeat: Infinity,
             repeatType: "loop",
-            duration: tickerItems.length * 3,
+            duration: tickerItems.length * 4,
             ease: "linear",
           },
         }}
       >
         {items.map((product, index) => {
           const priceChange = parseFloat(product.priceChange || "0");
+          const currentPrice = parseFloat(product.currentPrice || "0");
           const isPositive = priceChange > 0;
           const isNegative = priceChange < 0;
 
           return (
             <div
               key={`${product.id}-${index}`}
-              className="flex items-center gap-2 px-4 border-r border-gray-800 whitespace-nowrap"
+              className="flex items-center gap-3 px-5 border-r border-[var(--border-primary)] whitespace-nowrap"
             >
-              {/* Promoted badge */}
+              {/* Promoted indicator */}
               {product.isAdflowPromoted && (
-                <Sparkles className="w-3 h-3 text-yellow-400" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               )}
 
-              {/* Ticker symbol */}
-              <span className="font-mono font-bold text-white">
+              {/* Ticker */}
+              <span className="font-mono font-bold text-[var(--text-primary)] text-sm">
                 {product.ticker}
               </span>
 
+              {/* Dividend badge */}
+              {product.hasDividendBadge && (
+                <Award className="w-3.5 h-3.5 text-emerald-400/60" />
+              )}
+
               {/* Price */}
-              <span className="font-mono text-gray-300">
-                {parseFloat(product.currentPrice || "0").toFixed(2)}
+              <span className="font-mono text-[var(--text-secondary)] text-sm">
+                {currentPrice.toFixed(2)}
               </span>
 
-              {/* Change indicator */}
+              {/* Change */}
               <span
                 className={cn(
-                  "flex items-center gap-0.5 font-mono text-sm",
-                  isPositive && "text-emerald-400",
-                  isNegative && "text-red-400",
-                  !isPositive && !isNegative && "text-gray-500"
+                  "flex items-center gap-1 font-mono text-sm font-medium px-2 py-0.5 rounded-md",
+                  isPositive && "text-emerald-400 bg-emerald-500/10",
+                  isNegative && "text-red-400 bg-red-500/10",
+                  !isPositive && !isNegative && "text-[var(--text-muted)] bg-[var(--bg-tertiary)]"
                 )}
               >
                 {isPositive && <TrendingUp className="w-3 h-3" />}
@@ -69,13 +75,6 @@ export function TickerTape() {
                 {isPositive && "+"}
                 {priceChange.toFixed(2)}
               </span>
-
-              {/* Dividend badge */}
-              {product.hasDividendBadge && (
-                <span className="px-1.5 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-400 rounded">
-                  DIV
-                </span>
-              )}
             </div>
           );
         })}

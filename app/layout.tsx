@@ -33,7 +33,7 @@ export default function RootLayout({
       data-theme="dark"
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col font-sans bg-mesh bg-grain">
         <ThemeProvider>
           {children}
           <CookieBanner />
