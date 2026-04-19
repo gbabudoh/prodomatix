@@ -561,7 +561,7 @@ export default function ConsumerDashboard() {
                 <p className="text-sm text-[var(--text-muted)] mb-4">
                   Rate your first product
                 </p>
-                <Link href="/consumer/discover">
+                <Link href="/consumer/discovery">
                   <button className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer">
                     Start Rating
                   </button>

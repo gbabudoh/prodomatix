@@ -372,7 +372,7 @@ export default function MyRatingsPage() {
           <p className="text-[var(--text-muted)] text-sm mb-6 max-w-md mx-auto">
             Start rating products to build your history and see your impact on the market.
           </p>
-          <Link href="/consumer/discover">
+          <Link href="/consumer/discovery">
             <button className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl transition-colors shadow-lg shadow-emerald-500/20 cursor-pointer">
               <Sparkles className="w-4 h-4" />
               Discover Products

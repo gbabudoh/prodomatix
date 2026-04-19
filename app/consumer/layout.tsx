@@ -32,7 +32,7 @@ import {
 const navItems = [
   { href: "/consumer", label: "Dashboard", icon: Home, description: "Overview & stats" },
   { href: "/consumer/portfolio", label: "Portfolio", icon: Briefcase, description: "Your asset holdings" },
-  { href: "/consumer/discover", label: "Discover", icon: Search, description: "Find products" },
+  { href: "/consumer/discovery", label: "Discovery", icon: Search, description: "Find products" },
   { href: "/consumer/leaderboard", label: "Leaderboard", icon: Trophy, description: "Top scouts & ROI" },
   { href: "/consumer/rewards", label: "Rewards", icon: Gem, description: "Alpha Wallet & Dividends" },
   { href: "/consumer/npb", label: "NPB", icon: Rocket, description: "New Products Bank" },
