@@ -37,41 +37,42 @@ export function SearchFilter() {
   return (
     <div className="space-y-4">
       {/* Search Bar */}
-      <div className="flex gap-3">
-        <div className="flex-1 relative">
+      <div className="flex gap-3 relative z-20">
+        <div className="flex-1 relative group">
+          <div className="absolute inset-0 bg-emerald-500/5 rounded-xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
           <Input
-            placeholder="Search products, tickers, or categories..."
+            placeholder="Search markets, tickers, or trends..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            icon={<Search className="w-4 h-4" />}
-            className="pr-10"
+            icon={<Search className="w-4 h-4 text-emerald-400/70" />}
+            className="pr-10 glass border-[var(--border-primary)] focus:border-emerald-500/50 bg-[var(--bg-secondary)]/50 backdrop-blur-xl rounded-xl transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-[var(--bg-tertiary)] rounded-md transition-colors cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-emerald-500/20 rounded-lg transition-colors cursor-pointer group"
             >
-              <X className="w-4 h-4 text-[var(--text-muted)]" />
+              <X className="w-4 h-4 text-[var(--text-muted)] group-hover:text-emerald-400" />
             </button>
           )}
         </div>
-        <Button variant="secondary" className="flex items-center gap-2 px-4">
+        <Button variant="secondary" className="glass flex items-center gap-2 px-5 rounded-xl hover:border-emerald-500/30 transition-all shadow-lg active:scale-95">
           <SlidersHorizontal className="w-4 h-4" />
-          <span className="hidden sm:inline">Filters</span>
+          <span className="hidden sm:inline font-bold">Filters</span>
         </Button>
       </div>
 
       {/* Category Pills */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent -mx-1 px-1">
+      <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent -mx-1 px-1 relative z-10">
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => setCategory(category)}
             className={cn(
-              "px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all cursor-pointer border",
+              "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all cursor-pointer border",
               selectedCategory === category
-                ? "bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20"
-                : "bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-primary)] hover:border-[var(--border-secondary)] hover:text-[var(--text-primary)]"
+                ? "bg-emerald-500 text-white border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] scale-105"
+                : "glass text-[var(--text-secondary)] border-[var(--border-primary)] hover:border-emerald-500/40 hover:text-emerald-400 hover:scale-[1.02]"
             )}
           >
             {category}
@@ -80,10 +81,10 @@ export function SearchFilter() {
       </div>
 
       {/* Sort Options */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-[var(--text-muted)]">Sort by:</span>
-          <div className="flex gap-1 p-1 bg-[var(--bg-secondary)] rounded-xl border border-[var(--border-primary)]">
+      <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Sort Analytics:</span>
+          <div className="flex gap-1.5 p-1 glass rounded-xl border border-[var(--border-primary)] shadow-inner">
             {sortOptions.map((option) => {
               const Icon = option.icon;
               const isActive = sortBy === option.value;
@@ -99,17 +100,17 @@ export function SearchFilter() {
                     }
                   }}
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer",
+                    "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer",
                     isActive
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]"
+                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]"
+                      : "text-[var(--text-muted)] hover:text-emerald-300 hover:bg-white/5"
                   )}
                 >
                   <Icon className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{option.label}</span>
+                  <span className="hidden sm:inline uppercase tracking-tighter">{option.label}</span>
                   {isActive && (
-                    <span className="text-xs font-bold">
-                      {sortOrder === "asc" ? "↑" : "↓"}
+                    <span className="text-[10px] translate-y-[1px]">
+                      {sortOrder === "asc" ? "▲" : "▼"}
                     </span>
                   )}
                 </button>

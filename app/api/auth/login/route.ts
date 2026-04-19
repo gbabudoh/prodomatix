@@ -34,6 +34,8 @@ export async function POST(req: Request) {
         name: user.name,
         role: user.role,
         countryCode: user.countryCode,
+        alphaScore: user.alphaScore,
+        tier: user.tier,
       },
     });
   } catch (error) {

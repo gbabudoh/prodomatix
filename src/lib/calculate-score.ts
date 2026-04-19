@@ -62,12 +62,14 @@ export function calculateNewPrice(
   currentPrice: number,
   newRatingScore: number,
   totalRatings: number,
-  smoothingFactor: number = 0.1 // Higher = more reactive to new ratings
+  smoothingFactor: number = 0.1, // Higher = more reactive to new ratings
+  scoutWeight: number = 1.0 // Multiplier for senior scouts
 ): number {
   // For products with few ratings, weight new ratings more heavily
+  // We also multiply the smoothing factor by the scout weight to increase impact
   const adjustedSmoothing = Math.min(
-    smoothingFactor * (1 + 10 / (totalRatings + 1)),
-    0.5
+    smoothingFactor * (1 + 10 / (totalRatings + 1)) * scoutWeight,
+    0.8 // Clamp higher for senior scouts
   );
 
   // Exponential moving average

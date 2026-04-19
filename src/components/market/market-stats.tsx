@@ -1,7 +1,7 @@
 "use client";
 
 import { useMarketStore } from "@/store/market-store";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   TrendingUp,
@@ -107,49 +107,52 @@ export function MarketStats() {
         return (
           <motion.div
             key={stat.label}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.3 }}
-            className={`
-              relative p-5 rounded-2xl border overflow-hidden
-              bg-[var(--bg-secondary)] border-[var(--border-primary)]
-              hover:border-[var(--border-secondary)] transition-all duration-300
-              hover:shadow-lg ${colors.glow}
-            `}
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ delay: index * 0.1, duration: 0.4, type: "spring", stiffness: 100 }}
+            className={cn(
+              "relative p-5 rounded-2xl border overflow-hidden transition-all duration-500",
+              "glass border-[var(--border-primary)]",
+              `hover:border-${stat.color}-500/50 hover:shadow-[0_0_30px_rgba(var(--accent-rgb),0.1)]`
+            )}
           >
-            {/* Background Gradient */}
-            <div className={`absolute top-0 right-0 w-32 h-32 ${colors.bg} rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50`} />
+            {/* Background Glow */}
+            <div className={`absolute top-0 right-0 w-32 h-32 ${colors.bg} rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 opacity-30 group-hover:opacity-60 transition-opacity`} />
             
-            <div className="relative">
+            <div className="relative z-10">
               {/* Header */}
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-2.5 rounded-xl ${colors.bg} border ${colors.border}`}>
-                  <Icon className={`w-5 h-5 ${colors.text}`} />
+              <div className="flex items-center justify-between mb-5">
+                <div className={`p-3 rounded-xl ${colors.bg} border ${colors.border} shadow-[0_0_15px_rgba(0,0,0,0.1)]`}>
+                  <Icon className={`w-5 h-5 ${colors.text} animate-float`} />
                 </div>
                 
                 {stat.isLive ? (
-                  <div className="flex items-center gap-1.5 px-2 py-1 bg-[var(--bg-tertiary)] rounded-full">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
                     <span className="relative flex h-2 w-2">
                       <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${colors.bg} opacity-75`} />
-                      <span className={`relative inline-flex rounded-full h-2 w-2 ${colors.text.replace('text-', 'bg-')}`} />
+                      <span className={`relative inline-flex rounded-full h-2 w-2 ${stat.color === 'emerald' ? 'bg-emerald-500' : stat.color === 'red' ? 'bg-red-500' : 'bg-amber-500'}`} />
                     </span>
-                    <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase">Live</span>
+                    <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Live</span>
                   </div>
                 ) : stat.trend && (
-                  <div className={`flex items-center gap-0.5 text-xs font-medium ${stat.trendUp ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {stat.trendUp ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                  <div className={cn(
+                    "flex items-center gap-1 text-[11px] font-black font-mono px-2 py-0.5 rounded border",
+                    stat.trendUp ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-red-400 bg-red-500/10 border-red-500/20'
+                  )}>
+                    {stat.trendUp ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                     {stat.trend}
                   </div>
                 )}
               </div>
               
               {/* Value */}
-              <div className={`text-3xl font-bold font-mono tabular-nums ${colors.text} mb-1`}>
+              <div className={`text-4xl font-extrabold font-mono tabular-nums tracking-tighter ${colors.text} mb-2 drop-shadow-sm`}>
                 {stat.value}
               </div>
               
               {/* Label */}
-              <p className="text-sm text-[var(--text-muted)] font-medium">
+              <p className="text-[11px] text-[var(--text-muted)] font-bold uppercase tracking-[0.2em] opacity-80">
                 {stat.label}
               </p>
             </div>

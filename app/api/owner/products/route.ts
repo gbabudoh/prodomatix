@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { products, ratings } from "@/db/schema";
+import { products, ratings, npbNsbListings } from "@/db/schema";
 import { eq, sql, desc, and, gte } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -65,6 +65,18 @@ export async function GET() {
       newRatingsThisWeek = Number(ratingsCount?.count) || 0;
     }
 
+    // Count active NPB/NSB promotions
+    const [promotionsCount] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(npbNsbListings)
+      .where(
+        and(
+          eq(npbNsbListings.ownerId, user.id),
+          eq(npbNsbListings.isActive, true)
+        )
+      );
+    const activePromotions = Number(promotionsCount?.count) || 0;
+
     return NextResponse.json({
       products: ownerProducts,
       stats: {
@@ -72,6 +84,7 @@ export async function GET() {
         totalRatings,
         avgScore,
         dividendBadges,
+        activePromotions,
         weeklyChange: {
           products: newProductsThisWeek,
           ratings: newRatingsThisWeek,
@@ -101,7 +114,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const { name, ticker, description, category, imageUrl } = await request.json();
+    const { name, ticker, description, category, imageUrl, totalShares } = await request.json();
 
     // Validate required fields
     if (!name || !ticker) {
@@ -141,6 +154,9 @@ export async function POST(request: Request) {
         priceChangePercent: "0.00",
         totalRatings: 0,
         status: "ipo",
+        totalShares: totalShares?.toString() || "100000.00",
+        availableShares: totalShares?.toString() || "100000.00",
+        initialSharePrice: "5.00",
       })
       .returning();
 

@@ -62,7 +62,7 @@ export function PromotedBadge({ className, size = "md" }: BadgeProps) {
   );
 }
 
-export function IPOBadge({ className, size = "md" }: BadgeProps) {
+export function IPSBadge({ className, size = "md" }: BadgeProps) {
   const sizes = {
     sm: "px-2 py-0.5 text-xs gap-1",
     md: "px-3 py-1 text-sm gap-1.5",
@@ -84,7 +84,7 @@ export function IPOBadge({ className, size = "md" }: BadgeProps) {
       )}
     >
       <Zap className={iconSizes[size]} />
-      <span>Hot IPO</span>
+      <span>Hot IPS</span>
     </div>
   );
 }

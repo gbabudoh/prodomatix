@@ -48,7 +48,7 @@ function LoginForm() {
       if (returnTo) {
         router.push(returnTo);
       } else if (data.user.role === "owner") {
-        router.push("/dashboard");
+        router.push("/business/dashboard");
       } else {
         router.push("/consumer");
       }

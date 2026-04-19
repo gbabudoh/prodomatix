@@ -6,7 +6,7 @@ export async function GET() {
     const user = await getCurrentUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return NextResponse.json({ user: null });
     }
 
     return NextResponse.json({
@@ -18,6 +18,10 @@ export async function GET() {
         countryCode: user.countryCode,
         avatarUrl: user.avatarUrl,
         isVerified: user.isVerified,
+        alphaScore: user.alphaScore,
+        tier: user.tier,
+        siteCredits: user.siteCredits,
+        claimableAlpha: user.claimableAlpha,
         createdAt: user.createdAt,
       },
     });

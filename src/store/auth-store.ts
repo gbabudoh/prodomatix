@@ -11,6 +11,10 @@ interface User {
   countryCode?: string;
   avatarUrl?: string;
   isVerified?: boolean;
+  alphaScore?: string;
+  tier?: string;
+  siteCredits?: string;
+  claimableAlpha?: string;
   createdAt?: string;
 }
 
@@ -121,17 +125,19 @@ export const useAuthStore = create<AuthState>()(
 
           if (res.ok) {
             const data = await res.json();
-            set({
-              user: data.user,
-              isAuthenticated: true,
-              isLoading: false,
-            });
-          } else {
-            set({
-              user: null,
-              isAuthenticated: false,
-              isLoading: false,
-            });
+            if (data.user) {
+              set({
+                user: data.user,
+                isAuthenticated: true,
+                isLoading: false,
+              });
+            } else {
+              set({
+                user: null,
+                isAuthenticated: false,
+                isLoading: false,
+              });
+            }
           }
         } catch {
           set({

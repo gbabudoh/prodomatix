@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/shared/card";
 import { Button } from "@/components/shared/button";
 import { mockProducts } from "@/lib/mock-data";
 import { formatNumber, formatCurrency } from "@/lib/utils";
@@ -15,15 +14,17 @@ import {
   Eye,
   Clock,
   DollarSign,
-  Plus,
   Check,
+  Rocket,
+  Target,
+  BarChart3,
 } from "lucide-react";
 
 const campaignTypes = [
   {
-    id: "hot_ipo",
-    name: "Hot IPO",
-    description: "Pin your new product to the top of the ticker tape",
+    id: "hot_ips",
+    name: "Hot IPS",
+    description: "Pin your new product or service to the top of the ticker tape",
     price: 99,
     duration: "7 days",
     features: [
@@ -33,6 +34,8 @@ const campaignTypes = [
       "~50K impressions",
     ],
     color: "from-orange-500 to-red-500",
+    borderColor: "border-orange-500/30",
+    bgColor: "bg-orange-500/5",
     icon: Zap,
   },
   {
@@ -48,6 +51,8 @@ const campaignTypes = [
       "~100K reach",
     ],
     color: "from-purple-500 to-pink-500",
+    borderColor: "border-purple-500/30",
+    bgColor: "bg-purple-500/5",
     icon: Megaphone,
   },
   {
@@ -63,6 +68,8 @@ const campaignTypes = [
       "~75K impressions",
     ],
     color: "from-emerald-500 to-teal-500",
+    borderColor: "border-emerald-500/30",
+    bgColor: "bg-emerald-500/5",
     icon: TrendingUp,
   },
 ];
@@ -71,7 +78,6 @@ export default function AdFlowPage() {
   const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<string>("");
 
-  // Active campaigns (mock)
   const activeCampaigns = [
     {
       id: 1,
@@ -83,68 +89,75 @@ export default function AdFlowPage() {
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
-          <Sparkles className="w-8 h-8 text-yellow-400" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6"
+      >
+        <h1 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-1 flex items-center gap-3">
+          <div className="p-2 bg-amber-500/10 rounded-xl border border-amber-500/20">
+            <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-amber-400" />
+          </div>
           AdFLOW Billboard
         </h1>
-        <p className="text-gray-400">
-          Boost your products into the spotlight and drive more ratings.
+        <p className="text-[var(--text-muted)]">
+          Boost your products and services into the spotlight and drive more ratings.
         </p>
-      </div>
+      </motion.div>
 
       {/* Active Campaigns */}
       {activeCampaigns.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          transition={{ delay: 0.1 }}
+          className="mb-6"
         >
-          <Card className="border-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-transparent">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-yellow-400">
-                <Zap className="w-5 h-5" />
+          <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-transparent overflow-hidden light-border">
+            <div className="p-4 md:p-5 border-b border-[var(--border-primary)]">
+              <h2 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                <Zap className="w-5 h-5 text-amber-400" />
                 Active Campaigns
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h2>
+            </div>
+            <div className="p-4 md:p-5">
               <div className="space-y-4">
                 {activeCampaigns.map((campaign) => (
                   <div
                     key={campaign.id}
-                    className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[var(--bg-tertiary)] rounded-xl border border-[var(--border-primary)] light-border"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="p-2 bg-yellow-500/20 rounded-lg">
-                        <TrendingUp className="w-5 h-5 text-yellow-400" />
+                      <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                        <TrendingUp className="w-5 h-5 text-amber-400" />
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-emerald-400">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-mono font-bold text-blue-400">
                             {campaign.product.ticker}
                           </span>
-                          <span className="text-white font-medium">
+                          <span className="text-[var(--text-primary)] font-medium">
                             {campaign.product.name}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-[var(--text-muted)]">
                           Trending Boost Campaign
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-8">
-                      <div className="text-right">
-                        <p className="text-sm text-gray-500">Impressions</p>
-                        <p className="text-white font-medium flex items-center gap-1">
-                          <Eye className="w-4 h-4 text-gray-500" />
+                    <div className="flex items-center gap-6 sm:gap-8">
+                      <div className="text-left sm:text-right">
+                        <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">Impressions</p>
+                        <p className="text-[var(--text-primary)] font-medium flex items-center gap-1">
+                          <Eye className="w-4 h-4 text-[var(--text-muted)]" />
                           {formatNumber(campaign.impressions)}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-500">Ends in</p>
-                        <p className="text-yellow-400 font-medium flex items-center gap-1">
+                      <div className="text-left sm:text-right">
+                        <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">Ends in</p>
+                        <p className="text-amber-400 font-medium flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           2 days
                         </p>
@@ -153,17 +166,17 @@ export default function AdFlowPage() {
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
       )}
 
       {/* Campaign Types */}
-      <div className="mb-8">
-        <h2 className="text-xl font-bold text-white mb-4">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
           Choose a Campaign Type
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {campaignTypes.map((campaign, index) => {
             const Icon = campaign.icon;
             const isSelected = selectedCampaign === campaign.id;
@@ -173,14 +186,16 @@ export default function AdFlowPage() {
                 key={campaign.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: 0.1 + index * 0.1 }}
               >
-                <Card
+                <div
                   className={cn(
-                    "transition-all relative overflow-hidden cursor-pointer",
+                    "p-5 rounded-2xl border transition-all relative overflow-hidden cursor-pointer",
+                    "bg-[var(--bg-secondary)]",
                     isSelected
-                      ? "ring-2 ring-emerald-500 border-emerald-500"
-                      : "hover:border-gray-600"
+                      ? "ring-2 ring-blue-500 border-blue-500"
+                      : cn("hover:border-[var(--border-hover)]", campaign.borderColor),
+                    "light-border"
                   )}
                   onClick={() => setSelectedCampaign(campaign.id)}
                 >
@@ -197,24 +212,24 @@ export default function AdFlowPage() {
                     <div className="flex items-start justify-between mb-4">
                       <div
                         className={cn(
-                          "p-3 rounded-lg bg-gradient-to-br",
+                          "p-3 rounded-xl bg-gradient-to-br",
                           campaign.color
                         )}
                       >
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                       {isSelected && (
-                        <div className="p-1 bg-emerald-500 rounded-full">
+                        <div className="p-1.5 bg-blue-500 rounded-full">
                           <Check className="w-4 h-4 text-white" />
                         </div>
                       )}
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-xl font-bold text-white mb-2">
+                    <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">
                       {campaign.name}
                     </h3>
-                    <p className="text-gray-400 text-sm mb-4">
+                    <p className="text-[var(--text-muted)] text-sm mb-4">
                       {campaign.description}
                     </p>
 
@@ -223,31 +238,31 @@ export default function AdFlowPage() {
                       {campaign.features.map((feature) => (
                         <li
                           key={feature}
-                          className="flex items-center gap-2 text-sm text-gray-300"
+                          className="flex items-center gap-2 text-sm text-[var(--text-secondary)]"
                         >
-                          <Check className="w-4 h-4 text-emerald-400" />
+                          <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
                     </ul>
 
                     {/* Price */}
-                    <div className="flex items-end justify-between pt-4 border-t border-gray-800">
+                    <div className="flex items-end justify-between pt-4 border-t border-[var(--border-primary)]">
                       <div>
-                        <p className="text-sm text-gray-500">Duration</p>
-                        <p className="text-white font-medium">
+                        <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">Duration</p>
+                        <p className="text-[var(--text-primary)] font-medium">
                           {campaign.duration}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-500">Price</p>
-                        <p className="text-2xl font-bold text-white">
+                        <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider">Price</p>
+                        <p className="text-2xl font-bold text-[var(--text-primary)]">
                           {formatCurrency(campaign.price)}
                         </p>
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
               </motion.div>
             );
           })}
@@ -260,21 +275,24 @@ export default function AdFlowPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Card>
-            <CardHeader>
-              <CardTitle>Launch Campaign</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="rounded-2xl border border-[var(--border-primary)] bg-[var(--bg-secondary)] overflow-hidden light-border">
+            <div className="p-4 md:p-5 border-b border-[var(--border-primary)]">
+              <h3 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                <Rocket className="w-5 h-5 text-blue-400" />
+                Launch Campaign
+              </h3>
+            </div>
+            <div className="p-4 md:p-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Product Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                     Select Product
                   </label>
                   <select
                     value={selectedProduct}
                     onChange={(e) => setSelectedProduct(e.target.value)}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-primary)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 light-border"
                   >
                     <option value="">Choose a product...</option>
                     {mockProducts.slice(0, 3).map((product) => (
@@ -286,14 +304,14 @@ export default function AdFlowPage() {
                 </div>
 
                 {/* Summary */}
-                <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-gray-400 mb-3">
+                <div className="bg-[var(--bg-tertiary)] rounded-xl p-4 border border-[var(--border-primary)] light-border">
+                  <h4 className="text-sm font-medium text-[var(--text-muted)] mb-3 uppercase tracking-wider">
                     Campaign Summary
                   </h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Campaign Type</span>
-                      <span className="text-white">
+                      <span className="text-[var(--text-muted)]">Campaign Type</span>
+                      <span className="text-[var(--text-primary)] font-medium">
                         {
                           campaignTypes.find((c) => c.id === selectedCampaign)
                             ?.name
@@ -301,17 +319,17 @@ export default function AdFlowPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Duration</span>
-                      <span className="text-white">
+                      <span className="text-[var(--text-muted)]">Duration</span>
+                      <span className="text-[var(--text-primary)] font-medium">
                         {
                           campaignTypes.find((c) => c.id === selectedCampaign)
                             ?.duration
                         }
                       </span>
                     </div>
-                    <div className="flex justify-between pt-2 border-t border-gray-700">
-                      <span className="text-gray-400 font-medium">Total</span>
-                      <span className="text-emerald-400 font-bold text-lg">
+                    <div className="flex justify-between pt-2 border-t border-[var(--border-primary)]">
+                      <span className="text-[var(--text-secondary)] font-medium">Total</span>
+                      <span className="text-blue-400 font-bold text-lg">
                         {formatCurrency(
                           campaignTypes.find((c) => c.id === selectedCampaign)
                             ?.price || 0
@@ -322,7 +340,7 @@ export default function AdFlowPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-6">
+              <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
                 <Button
                   variant="secondary"
                   onClick={() => setSelectedCampaign(null)}
@@ -337,31 +355,37 @@ export default function AdFlowPage() {
                   Launch Campaign
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mt-6">
         {[
           {
             label: "Total Spent",
             value: "$447",
             icon: DollarSign,
             color: "text-emerald-400",
+            bgColor: "bg-emerald-500/10",
+            borderColor: "border-emerald-500/20",
           },
           {
             label: "Total Impressions",
             value: "125.4K",
             icon: Eye,
             color: "text-blue-400",
+            bgColor: "bg-blue-500/10",
+            borderColor: "border-blue-500/20",
           },
           {
             label: "Campaigns Run",
             value: "3",
-            icon: Megaphone,
+            icon: Target,
             color: "text-purple-400",
+            bgColor: "bg-purple-500/10",
+            borderColor: "border-purple-500/20",
           },
         ].map((stat, index) => {
           const Icon = stat.icon;
@@ -372,19 +396,22 @@ export default function AdFlowPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + index * 0.1 }}
             >
-              <Card>
+              <div className={cn(
+                "p-4 md:p-5 rounded-2xl border bg-[var(--bg-secondary)] light-border",
+                stat.borderColor
+              )}>
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-gray-800 rounded-lg">
+                  <div className={cn("p-3 rounded-xl", stat.bgColor)}>
                     <Icon className={cn("w-6 h-6", stat.color)} />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">{stat.label}</p>
+                    <p className="text-sm text-[var(--text-muted)]">{stat.label}</p>
                     <p className={cn("text-2xl font-bold", stat.color)}>
                       {stat.value}
                     </p>
                   </div>
                 </div>
-              </Card>
+              </div>
             </motion.div>
           );
         })}

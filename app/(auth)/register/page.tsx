@@ -85,7 +85,7 @@ function RegisterForm() {
       await register({ email, password, name, role, countryCode });
 
       if (role === "owner") {
-        router.push("/dashboard");
+        router.push("/business/dashboard");
       } else {
         router.push("/consumer");
       }
@@ -177,7 +177,7 @@ function RegisterForm() {
                     List products, track sentiment, and grow your brand
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {["Launch IPOs", "Analytics", "AdFlow Ads"].map((feature) => (
+                    {["Launch IPS", "Analytics", "AdFlow Ads"].map((feature) => (
                       <span key={feature} className="inline-flex items-center gap-1 text-xs text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full">
                         <Check className="w-3 h-3" />
                         {feature}

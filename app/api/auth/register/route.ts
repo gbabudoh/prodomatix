@@ -58,6 +58,8 @@ export async function POST(req: Request) {
         email: user.email,
         name: user.name,
         role: user.role,
+        alphaScore: user.alphaScore,
+        tier: user.tier,
       },
     });
   } catch (error) {

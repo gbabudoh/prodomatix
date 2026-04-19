@@ -68,7 +68,7 @@ export function AdFlowBillboard() {
                   </div>
                   {featured.status === "ipo" && (
                     <span className="px-3 py-1.5 bg-blue-500/20 border border-blue-500/30 rounded-full text-blue-400 text-xs font-bold uppercase">
-                      Hot IPO
+                      Hot IPS
                     </span>
                   )}
                   {featured.hasDividendBadge && (

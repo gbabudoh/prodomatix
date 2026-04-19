@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useMarketStore } from "@/store/market-store";
 import { useAuthStore } from "@/store/auth-store";
 import { TickerTape } from "@/components/market/ticker-tape";
 import { ProdoCard } from "@/components/market/prodo-card";
-import { LiveFeed } from "@/components/market/live-feed";
+
+const LiveFeed = dynamic(
+  () => import("@/components/market/live-feed").then((mod) => mod.LiveFeed),
+  { ssr: false }
+);
+
 import { TopMovers } from "@/components/market/top-movers";
 import { SearchFilter } from "@/components/market/search-filter";
 import { MarketStats } from "@/components/market/market-stats";
@@ -26,7 +32,14 @@ export default function TradingFloor() {
     checkAuth();
   }, [checkAuth]);
 
-  const dashboardLink = user?.role === "owner" ? "/dashboard" : "/consumer";
+  // Track that user is on homepage for back navigation
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("lastVisitedPath", "/");
+    }
+  }, []);
+
+  const dashboardLink = user?.role === "owner" ? "/business/dashboard" : "/consumer";
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
@@ -53,12 +66,17 @@ export default function TradingFloor() {
               <Link href="/" className="px-4 py-2 text-sm font-medium text-emerald-400 bg-emerald-500/10 rounded-lg cursor-pointer">
                 Markets
               </Link>
-              <Link href="/login" className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors cursor-pointer">
-                Portfolio
-              </Link>
-              <Link href="/login" className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors cursor-pointer">
-                Analytics
-              </Link>
+              {/* Portfolio & Analytics only visible to owners/business users */}
+              {isAuthenticated && user?.role === "owner" && (
+                <>
+                  <Link href="/business/dashboard/portfolio" className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors cursor-pointer">
+                    Portfolio
+                  </Link>
+                  <Link href="/business/dashboard/global" className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors cursor-pointer">
+                    Analytics
+                  </Link>
+                </>
+              )}
             </nav>
 
             {/* Right Actions */}
@@ -111,9 +129,26 @@ export default function TradingFloor() {
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-[var(--border-primary)]">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5 overflow-hidden">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+              rotate: [0, 90, 0]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/10 rounded-full blur-[120px]" 
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1.2, 1, 1.2],
+              opacity: [0.2, 0.4, 0.2],
+              rotate: [0, -90, 0]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-500/10 rounded-full blur-[120px]" 
+          />
+        </div>
         
         <div className="relative max-w-[1400px] mx-auto px-6 py-16 md:py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -123,10 +158,14 @@ export default function TradingFloor() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-                <Activity className="w-4 h-4 text-emerald-400" />
-                <span className="text-sm font-medium text-emerald-400">Live Market Data</span>
-                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6 relative group cursor-default">
+                <div className="absolute inset-0 bg-emerald-400/5 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Activity className="w-4 h-4 text-emerald-400 relative z-10" />
+                <span className="text-sm font-medium text-emerald-400 relative z-10">Live Market Pulse</span>
+                <div className="relative flex h-2 w-2 relative z-10">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </div>
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] leading-[1.1] mb-6">
@@ -158,18 +197,24 @@ export default function TradingFloor() {
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex items-center gap-8 mt-10 pt-8 border-t border-[var(--border-primary)]">
-                <div>
-                  <div className="text-2xl font-bold text-[var(--text-primary)]">10K+</div>
+              <div className="flex items-center gap-8 mt-10 pt-8 border-t border-[var(--border-primary)] relative">
+                <div className="relative group">
+                  <div className="text-2xl font-bold text-[var(--text-primary)] group-hover:text-emerald-400 transition-colors">10K+</div>
                   <div className="text-sm text-[var(--text-muted)]">Active Traders</div>
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    whileHover={{ scale: 1 }}
+                    className="absolute -top-1 -right-4 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]" 
+                  />
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-[var(--text-primary)]">500+</div>
+                <div className="relative group">
+                  <div className="text-2xl font-bold text-[var(--text-primary)] group-hover:text-amber-400 transition-colors">500+</div>
                   <div className="text-sm text-[var(--text-muted)]">Products Listed</div>
                 </div>
-                <div>
+                <div className="relative group">
                   <div className="text-2xl font-bold text-emerald-400">99.9%</div>
                   <div className="text-sm text-[var(--text-muted)]">Uptime</div>
+                  <div className="absolute -bottom-1 left-0 w-full h-[1px] bg-gradient-to-r from-emerald-400/50 to-transparent" />
                 </div>
               </div>
             </motion.div>

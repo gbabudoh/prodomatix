@@ -12,13 +12,13 @@ export function TickerTape() {
   const items = [...tickerItems, ...tickerItems];
 
   return (
-    <div className="relative overflow-hidden bg-[var(--bg-secondary)] border-b border-[var(--border-primary)]">
-      {/* Gradient overlays */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[var(--bg-secondary)] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[var(--bg-secondary)] to-transparent z-10 pointer-events-none" />
+    <div className="relative overflow-hidden bg-[var(--bg-secondary)]/40 backdrop-blur-3xl border-b border-[var(--border-primary)] shadow-[0_4px_30px_rgba(0,0,0,0.2)] isolation-auto">
+      {/* Gradient overlays with glass effect */}
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[var(--bg-secondary)] via-[var(--bg-secondary)]/50 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[var(--bg-secondary)] via-[var(--bg-secondary)]/50 to-transparent z-10 pointer-events-none" />
 
       <motion.div
-        className="flex py-2.5"
+        className="flex py-3.5"
         animate={{ x: [0, -50 * tickerItems.length] }}
         transition={{
           x: {
