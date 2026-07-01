@@ -1,0 +1,99 @@
+// Prisma 7 schema. The client is generated to ./generated/prisma (outside node_modules)
+// and connects at runtime through the node-postgres driver adapter (see db/prisma.js).
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         String     @default("user") // 'user' | 'admin'
+  freeCredits  Int        @default(3)
+  createdAt    DateTime   @default(now())
+  purchases    Purchase[]
+
+  @@map("users")
+}
+
+model Business {
+  id               Int             @id @default(autoincrement())
+  businessName     String
+  businessType     String          @default("Manufacturer") // Manufacturer | Distributor | Wholesaler
+  industry         String          @default("Other")         // category / sector
+  country          String          @default("")              // public teaser location
+  location         String          @default("")              // precise city/address (locked)
+  region           String          @default("")
+  website          String          @default("")
+  email            String          @default("")
+  phone            String          @default("")
+  staffCapacity    Int             @default(0)
+  revenue          Int             @default(0) // in $M
+  productOrService String          @default("")
+  description      String          @default("")
+  contacts         Int             @default(1) // verified contacts
+  verified         Int             @default(90) // verified %
+  price            Int             @default(0) // flat unit price (whole dollars)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  contactPersons   ContactPerson[]
+  purchaseItems    PurchaseItem[]
+
+  @@index([businessType])
+  @@index([industry])
+  @@index([region])
+  @@map("businesses")
+}
+
+model ContactPerson {
+  id         Int      @id @default(autoincrement())
+  businessId Int
+  name       String   @default("")
+  title      String   @default("")
+  email      String   @default("")
+  phone      String   @default("")
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@map("contact_persons")
+}
+
+model Purchase {
+  id              Int            @id @default(autoincrement())
+  userId          Int
+  reference       String         @unique
+  subtotal        Float          @default(0)
+  discount        Float          @default(0)
+  tax             Float          @default(0)
+  total           Float          @default(0)
+  isFree          Boolean        @default(false)
+  stripeIntentId  String?        @unique
+  createdAt       DateTime       @default(now())
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items           PurchaseItem[]
+
+  @@index([userId])
+  @@map("purchases")
+}
+
+model PurchaseItem {
+  id         Int      @id @default(autoincrement())
+  purchaseId Int
+  businessId Int
+  unitPrice  Float    @default(0)
+  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Restrict)
+
+  @@unique([purchaseId, businessId])
+  @@index([businessId])
+  @@map("purchase_items")
+}

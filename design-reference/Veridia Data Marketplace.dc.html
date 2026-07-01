@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#F6F7F9}
+    input{font-family:inherit;outline:none}
+    button{font-family:inherit;cursor:pointer}
+    ::-webkit-scrollbar{width:11px;height:11px}
+    ::-webkit-scrollbar-thumb{background:#D3D8E0;border-radius:6px;border:3px solid #F6F7F9}
+    ::-webkit-scrollbar-thumb:hover{background:#BCC3CD}
+  </style>
+</helmet>
+<div style="font-family:'IBM Plex Sans',sans-serif;color:#181B22;height:100vh;display:flex;flex-direction:column;background:#F6F7F9;overflow:hidden">
+
+  <header style="height:60px;flex:0 0 60px;background:#fff;border-bottom:1px solid #E3E6EB;display:flex;align-items:center;padding:0 24px;gap:24px;z-index:5">
+    <div style="display:flex;align-items:center;gap:11px">
+      <div style="width:30px;height:30px;background:#2E54D4;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px">V</div>
+      <span style="font-weight:700;font-size:17px;letter-spacing:-0.01em">Veridia</span>
+      <span style="font-size:10.5px;font-weight:600;color:#8A93A1;text-transform:uppercase;letter-spacing:0.09em;border-left:1px solid #E3E6EB;padding-left:11px">Data Marketplace</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin:0 auto">
+      <div style="{{ step1Style }}">1&nbsp;&nbsp;Select data</div>
+      <span style="color:#C7CDD6;font-size:13px">›</span>
+      <div style="{{ step2Style }}">2&nbsp;&nbsp;Checkout</div>
+      <span style="color:#C7CDD6;font-size:13px">›</span>
+      <div style="{{ step3Style }}">3&nbsp;&nbsp;Download</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span style="font-size:13px;color:#616B7A">Acme Growth Inc.</span>
+      <div style="width:32px;height:32px;border-radius:50%;background:#EEF2FE;color:#2E54D4;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px">AG</div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ true }}">
+  <div style="flex:1;display:flex;min-height:0">
+
+    <aside style="width:286px;flex:0 0 286px;background:#fff;border-right:1px solid #E3E6EB;overflow-y:auto;padding:20px 20px 32px">
+      <div style="position:relative;margin-bottom:24px">
+        <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#9AA2AE;font-size:14px">⌕</span>
+        <input value="{{ search }}" onChange="{{ onSearch }}" placeholder="Search companies…" style="width:100%;height:38px;border:1px solid #E0E3E9;border-radius:8px;padding:0 12px 0 30px;font-size:13.5px;background:#FAFBFC" />
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:#8A93A1">Industry</span>
+      </div>
+      <div style="margin-bottom:24px">
+        <sc-for list="{{ industries }}" as="opt" hint-placeholder-count="6">
+          <div onClick="{{ opt.toggle }}" style="{{ opt.rowStyle }}">
+            <div style="{{ opt.boxStyle }}">{{ opt.check }}</div>
+            <span style="flex:1;font-size:13.5px">{{ opt.name }}</span>
+            <span style="font-size:12px;color:#9AA2AE;font-family:'IBM Plex Mono'">{{ opt.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:#8A93A1;display:block;margin-bottom:10px">Location</span>
+      <div style="margin-bottom:24px">
+        <sc-for list="{{ locations }}" as="opt" hint-placeholder-count="5">
+          <div onClick="{{ opt.toggle }}" style="{{ opt.rowStyle }}">
+            <div style="{{ opt.boxStyle }}">{{ opt.check }}</div>
+            <span style="flex:1;font-size:13.5px">{{ opt.name }}</span>
+            <span style="font-size:12px;color:#9AA2AE;font-family:'IBM Plex Mono'">{{ opt.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:#8A93A1;display:block;margin-bottom:10px">Company size</span>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px">
+        <sc-for list="{{ sizeOptions }}" as="opt" hint-placeholder-count="5">
+          <button onClick="{{ opt.set }}" style="{{ opt.style }}">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+
+      <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:#8A93A1;display:block;margin-bottom:10px">Annual revenue</span>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px">
+        <sc-for list="{{ revOptions }}" as="opt" hint-placeholder-count="5">
+          <button onClick="{{ opt.set }}" style="{{ opt.style }}">{{ opt.label }}</button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ clearFilters }}" style="background:none;border:none;color:#2E54D4;font-size:13px;font-weight:500;padding:0">Clear all filters</button>
+    </aside>
+
+    <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+      <div style="height:53px;flex:0 0 53px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid #E3E6EB;background:#fff">
+        <div style="font-size:13.5px;color:#616B7A">Showing <b style="color:#181B22">{{ filteredCount }}</b> of {{ totalCount }} companies · <span style="font-family:'IBM Plex Mono'">{{ filteredContactsFmt }}</span> contacts available</div>
+        <button onClick="{{ selectAllFiltered }}" style="{{ selectAllStyle }}">{{ selectAllLabel }}</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:42px minmax(0,1.7fr) 1.05fr 1.15fr 0.85fr 0.78fr 0.92fr 0.82fr;align-items:center;padding:0 20px;height:38px;flex:0 0 38px;background:#FBFBFC;border-bottom:1px solid #E3E6EB;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9AA2AE">
+        <div></div>
+        <div>Company</div>
+        <div>Industry</div>
+        <div>Location</div>
+        <div>Employees</div>
+        <div>Contacts</div>
+        <div>Match</div>
+        <div style="text-align:right">Price</div>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;background:#fff">
+        <sc-for list="{{ rows }}" as="row" hint-placeholder-count="9">
+          <div onClick="{{ row.toggle }}" style="{{ row.rowStyle }}">
+            <div style="{{ row.boxStyle }}">{{ row.check }}</div>
+            <div style="display:flex;align-items:center;gap:10px;min-width:0">
+              <span style="{{ row.dotStyle }}"></span>
+              <div style="min-width:0">
+                <div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.name }}</div>
+                <div style="font-size:11.5px;color:#9AA2AE;font-family:'IBM Plex Mono'">{{ row.domain }}</div>
+              </div>
+            </div>
+            <div style="font-size:13.5px;color:#3A4250">{{ row.industry }}</div>
+            <div style="font-size:13.5px;color:#3A4250">{{ row.location }}</div>
+            <div style="font-size:13px;color:#3A4250;font-family:'IBM Plex Mono'">{{ row.empFmt }}</div>
+            <div style="font-size:13px;font-family:'IBM Plex Mono';font-weight:500">{{ row.contactsFmt }}</div>
+            <div style="font-size:12.5px;color:#1F8F5B;font-weight:500">{{ row.matchFmt }}</div>
+            <div style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px;text-align:right">{{ row.priceFmt }}</div>
+          </div>
+        </sc-for>
+        <div style="height:8px"></div>
+      </div>
+
+      <div style="flex:0 0 74px;background:#fff;border-top:1px solid #E3E6EB;display:flex;align-items:center;justify-content:space-between;padding:0 24px;box-shadow:0 -3px 14px rgba(20,30,60,0.05)">
+        <div style="display:flex;align-items:center;gap:22px">
+          <div>
+            <div style="font-size:19px;font-weight:700;font-family:'IBM Plex Mono';line-height:1.1">{{ selectedCount }}</div>
+            <div style="font-size:11.5px;color:#8A93A1">records selected</div>
+          </div>
+          <div style="width:1px;height:34px;background:#E3E6EB"></div>
+          <div>
+            <div style="font-size:19px;font-weight:700;font-family:'IBM Plex Mono';line-height:1.1">{{ contactsSelectedFmt }}</div>
+            <div style="font-size:11.5px;color:#8A93A1">contacts included</div>
+          </div>
+          <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ clearSelection }}" style="background:none;border:none;color:#8A93A1;font-size:13px;text-decoration:underline">Clear</button>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="text-align:right">
+            <div style="font-size:11.5px;color:#8A93A1">Estimated total</div>
+            <div style="font-size:21px;font-weight:700;font-family:'IBM Plex Mono';line-height:1.15">{{ selectedTotalFmt }}</div>
+          </div>
+          <button onClick="{{ goCheckout }}" style="{{ continueStyle }}">Continue to checkout →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;overflow-y:auto;padding:30px 32px 60px">
+    <div style="width:100%;max-width:1080px;margin:0 auto">
+      <button onClick="{{ goBack }}" style="background:none;border:none;color:#616B7A;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:6px">← Back to selection</button>
+      <h1 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px">Review your data order</h1>
+      <p style="font-size:14px;color:#616B7A;margin-bottom:26px">{{ selectedCount }} company records · {{ contactsSelectedFmt }} verified contacts</p>
+
+      <div style="display:grid;grid-template-columns:1fr 372px;gap:26px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#fff;border:1px solid #E3E6EB;border-radius:12px;overflow:hidden">
+            <div style="padding:14px 18px;border-bottom:1px solid #EFF1F4;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#8A93A1">Selected records</div>
+            <div style="max-height:320px;overflow-y:auto">
+              <sc-for list="{{ selectedRows }}" as="row" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #F2F4F6">
+                  <span style="{{ row.dotStyle }}"></span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:600;font-size:13.5px">{{ row.name }}</div>
+                    <div style="font-size:12px;color:#9AA2AE">{{ row.industry }} · {{ row.location }} · {{ row.contactsFmt }} contacts</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono';font-weight:600;font-size:13.5px">{{ row.priceFmt }}</div>
+                  <button onClick="{{ row.toggle }}" style="background:none;border:none;color:#C2C8D0;font-size:16px;line-height:1;padding:2px">✕</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #E3E6EB;border-radius:12px;padding:18px">
+            <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#8A93A1;margin-bottom:14px">Delivery format</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <sc-for list="{{ formats }}" as="f" hint-placeholder-count="4">
+                <div onClick="{{ f.toggle }}" style="{{ f.style }}">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+                    <span style="font-weight:600;font-size:13.5px">{{ f.label }}</span>
+                    <span style="{{ f.tickStyle }}">✓</span>
+                  </div>
+                  <div style="font-size:12px;color:#8A93A1">{{ f.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #E3E6EB;border-radius:12px;padding:22px;position:sticky;top:0">
+          <div style="font-size:15px;font-weight:700;margin-bottom:16px">Order summary</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between"><span style="color:#616B7A">Subtotal ({{ selectedCount }} records)</span><span style="font-family:'IBM Plex Mono'">{{ subtotalFmt }}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#1F8F5B">Volume discount ({{ discountPct }})</span><span style="font-family:'IBM Plex Mono';color:#1F8F5B">−{{ discountFmt }}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#616B7A">Tax (8.25%)</span><span style="font-family:'IBM Plex Mono'">{{ taxFmt }}</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #EFF1F4;margin-bottom:20px">
+            <span style="font-weight:600">Total</span>
+            <span style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono'">{{ totalFmt }}</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+            <input placeholder="Cardholder name" style="height:40px;border:1px solid #E0E3E9;border-radius:8px;padding:0 12px;font-size:13.5px;background:#FAFBFC" />
+            <input placeholder="Card number" style="height:40px;border:1px solid #E0E3E9;border-radius:8px;padding:0 12px;font-size:13.5px;font-family:'IBM Plex Mono';background:#FAFBFC" />
+            <div style="display:flex;gap:10px">
+              <input placeholder="MM / YY" style="flex:1;height:40px;border:1px solid #E0E3E9;border-radius:8px;padding:0 12px;font-size:13.5px;font-family:'IBM Plex Mono';background:#FAFBFC" />
+              <input placeholder="CVC" style="flex:1;height:40px;border:1px solid #E0E3E9;border-radius:8px;padding:0 12px;font-size:13.5px;font-family:'IBM Plex Mono';background:#FAFBFC" />
+            </div>
+          </div>
+
+          <button onClick="{{ completePurchase }}" style="{{ payStyle }}">{{ payLabel }}</button>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:12px;color:#9AA2AE">🔒 Secured · GDPR &amp; CCPA compliant</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:56px 32px">
+    <div style="width:100%;max-width:560px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;background:#E7F4EE;color:#1F8F5B;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 22px">✓</div>
+      <h1 style="font-size:27px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px">Your data is ready</h1>
+      <p style="font-size:14.5px;color:#616B7A;margin-bottom:30px">Order <span style="font-family:'IBM Plex Mono';color:#181B22">{{ orderId }}</span> · {{ selectedCount }} records · {{ contactsSelectedFmt }} contacts · {{ totalFmt }}</p>
+
+      <div style="background:#fff;border:1px solid #E3E6EB;border-radius:12px;padding:10px;text-align:left;margin-bottom:22px">
+        <sc-for list="{{ downloadFiles }}" as="f" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 14px">
+            <div style="{{ f.iconStyle }}">{{ f.ext }}</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:14px">{{ f.name }}</div>
+              <div style="font-size:12px;color:#9AA2AE;font-family:'IBM Plex Mono'">{{ f.size }}</div>
+            </div>
+            <button style="height:36px;padding:0 16px;border-radius:8px;border:1px solid #D3D8E0;background:#fff;font-size:13px;font-weight:500;color:#2E54D4">Download</button>
+          </div>
+        </sc-for>
+      </div>
+
+      <p style="font-size:12.5px;color:#9AA2AE;margin-bottom:26px;line-height:1.5">A secure download link has been emailed to <span style="color:#616B7A">team@acmegrowth.com</span>.<br/>Files remain available in your account for 30 days.</p>
+      <button onClick="{{ restart }}" style="height:42px;padding:0 24px;border-radius:9px;border:none;background:#2E54D4;color:#fff;font-size:14px;font-weight:600">Back to marketplace</button>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  companies = [
+    {id:1,name:'Northwind Analytics',industry:'SaaS',location:'San Francisco, CA',region:'West US',emp:420,rev:58,contacts:41,verified:96,domain:'northwind.io'},
+    {id:2,name:'Cobalt Cloud Systems',industry:'SaaS',location:'Austin, TX',region:'Central US',emp:180,rev:22,contacts:26,verified:93,domain:'cobaltcloud.com'},
+    {id:3,name:'Meridian Software',industry:'SaaS',location:'Seattle, WA',region:'West US',emp:760,rev:110,contacts:64,verified:97,domain:'meridian.dev'},
+    {id:4,name:'Pinecrest Labs',industry:'SaaS',location:'Denver, CO',region:'West US',emp:95,rev:9,contacts:18,verified:90,domain:'pinecrest.ai'},
+    {id:5,name:'Aperture Fintech',industry:'Fintech',location:'New York, NY',region:'East US',emp:540,rev:140,contacts:52,verified:98,domain:'aperturefin.com'},
+    {id:6,name:'Sterling Pay',industry:'Fintech',location:'Charlotte, NC',region:'East US',emp:220,rev:47,contacts:33,verified:94,domain:'sterlingpay.com'},
+    {id:7,name:'Veltrix Capital',industry:'Fintech',location:'London, UK',region:'UK & Ireland',emp:310,rev:88,contacts:29,verified:95,domain:'veltrix.co.uk'},
+    {id:8,name:'Northgate Bank Tech',industry:'Fintech',location:'Dublin, IE',region:'UK & Ireland',emp:1200,rev:240,contacts:95,verified:92,domain:'northgate.ie'},
+    {id:9,name:'Helios Health',industry:'Healthcare',location:'Boston, MA',region:'East US',emp:640,rev:130,contacts:58,verified:96,domain:'helioshealth.com'},
+    {id:10,name:'Caremont Systems',industry:'Healthcare',location:'Minneapolis, MN',region:'Central US',emp:410,rev:72,contacts:44,verified:93,domain:'caremont.com'},
+    {id:11,name:'Vitalis Bio',industry:'Healthcare',location:'San Diego, CA',region:'West US',emp:130,rev:28,contacts:21,verified:97,domain:'vitalisbio.com'},
+    {id:12,name:'Orchid Medical',industry:'Healthcare',location:'Munich, DE',region:'DACH',emp:880,rev:160,contacts:70,verified:91,domain:'orchidmed.de'},
+    {id:13,name:'Forge Manufacturing',industry:'Manufacturing',location:'Detroit, MI',region:'Central US',emp:2100,rev:410,contacts:88,verified:89,domain:'forgemfg.com'},
+    {id:14,name:'Ironclad Components',industry:'Manufacturing',location:'Cleveland, OH',region:'Central US',emp:760,rev:95,contacts:41,verified:90,domain:'ironclad.com'},
+    {id:15,name:'Helvern Industrie',industry:'Manufacturing',location:'Stuttgart, DE',region:'DACH',emp:3400,rev:720,contacts:130,verified:88,domain:'helvern.de'},
+    {id:16,name:'Nordwind Robotics',industry:'Manufacturing',location:'Gothenburg, SE',region:'Nordics',emp:540,rev:88,contacts:36,verified:94,domain:'nordwind.se'},
+    {id:17,name:'Brightpath Logistics',industry:'Logistics',location:'Chicago, IL',region:'Central US',emp:1300,rev:210,contacts:77,verified:91,domain:'brightpath.com'},
+    {id:18,name:'Cargolux Freight',industry:'Logistics',location:'Rotterdam, NL',region:'Western Europe',emp:980,rev:175,contacts:60,verified:90,domain:'cargolux.nl'},
+    {id:19,name:'Summit Distribution',industry:'Logistics',location:'Atlanta, GA',region:'Central US',emp:620,rev:99,contacts:47,verified:92,domain:'summitdist.com'},
+    {id:20,name:'Lumen Retail Group',industry:'Retail',location:'Columbus, OH',region:'Central US',emp:4500,rev:980,contacts:150,verified:87,domain:'lumenretail.com'},
+    {id:21,name:'Maison & Co',industry:'Retail',location:'Paris, FR',region:'Western Europe',emp:1700,rev:320,contacts:92,verified:89,domain:'maison.fr'},
+    {id:22,name:'Harvest Goods',industry:'Retail',location:'Portland, OR',region:'West US',emp:240,rev:36,contacts:28,verified:93,domain:'harvestgoods.com'},
+    {id:23,name:'Solstice Energy',industry:'Energy',location:'Houston, TX',region:'Central US',emp:1900,rev:540,contacts:84,verified:90,domain:'solsticeenergy.com'},
+    {id:24,name:'GridPoint Power',industry:'Energy',location:'Calgary, CA',region:'Canada',emp:720,rev:190,contacts:49,verified:91,domain:'gridpoint.ca'},
+    {id:25,name:'Aurora Renewables',industry:'Energy',location:'Copenhagen, DK',region:'Nordics',emp:430,rev:96,contacts:34,verified:95,domain:'auroraren.dk'},
+    {id:26,name:'Beacon Media',industry:'Media',location:'Los Angeles, CA',region:'West US',emp:380,rev:64,contacts:39,verified:94,domain:'beaconmedia.com'},
+    {id:27,name:'Tempo Digital',industry:'Media',location:'Toronto, CA',region:'Canada',emp:260,rev:41,contacts:27,verified:92,domain:'tempodigital.ca'},
+    {id:28,name:'Kestrel Press',industry:'Media',location:'Manchester, UK',region:'UK & Ireland',emp:150,rev:19,contacts:16,verified:90,domain:'kestrelpress.co.uk'}
+  ];
+
+  formatDefs = [
+    {id:'csv',label:'CSV',desc:'Universal spreadsheet',ext:'CSV'},
+    {id:'xlsx',label:'Excel (XLSX)',desc:'Formatted workbook',ext:'XLS'},
+    {id:'json',label:'JSON',desc:'For developers / API',ext:'{ }'},
+    {id:'crm',label:'CRM Sync',desc:'Salesforce · HubSpot',ext:'CRM'}
+  ];
+
+  sizeDefs = [
+    {id:'any',label:'Any'},{id:'s',label:'1–200'},{id:'m',label:'201–1k'},{id:'l',label:'1k–5k'},{id:'xl',label:'5k+'}
+  ];
+  revDefs = [
+    {id:'any',label:'Any'},{id:'a',label:'<$50M'},{id:'b',label:'$50–250M'},{id:'c',label:'$250M+'}
+  ];
+
+  PRICE_PER = 1.5;
+  hues = {SaaS:255,Fintech:200,Healthcare:155,Manufacturing:35,Retail:330,Logistics:285,Energy:95,Media:15};
+
+  state = { step:'browse', search:'', inds:[], locs:[], size:'any', rev:'any', selected:{}, formats:['csv'], orderId:'' };
+
+  priceOf(c){ return Math.round(c.contacts * this.PRICE_PER); }
+  sizeBucket(emp){ if(emp<=200)return 's'; if(emp<=1000)return 'm'; if(emp<=5000)return 'l'; return 'xl'; }
+  revBucket(r){ if(r<50)return 'a'; if(r<=250)return 'b'; return 'c'; }
+  fmtNum(n){ return n.toLocaleString('en-US'); }
+  money(n){ return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  moneyR(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+
+  toggleArr(key,val){ this.setState(s=>{ const a=s[key]; const n=a.includes(val)?a.filter(x=>x!==val):[...a,val]; return {[key]:n}; }); }
+  toggleRow(id){ this.setState(s=>{ const sel={...s.selected}; if(sel[id])delete sel[id]; else sel[id]=true; return {selected:sel}; }); }
+  toggleFormat(id){ this.setState(s=>{ const has=s.formats.includes(id); if(has){ if(s.formats.length===1)return{}; return {formats:s.formats.filter(x=>x!==id)};} return {formats:[...s.formats,id]}; }); }
+
+  applyFilters(){
+    const s=this.state; const q=s.search.trim().toLowerCase();
+    return this.companies.filter(c=>{
+      if(q && !c.name.toLowerCase().includes(q) && !c.domain.toLowerCase().includes(q)) return false;
+      if(s.inds.length && !s.inds.includes(c.industry)) return false;
+      if(s.locs.length && !s.locs.includes(c.region)) return false;
+      if(s.size!=='any' && this.sizeBucket(c.emp)!==s.size) return false;
+      if(s.rev!=='any' && this.revBucket(c.rev)!==s.rev) return false;
+      return true;
+    });
+  }
+
+  chip(active){ return {height:'30px',padding:'0 12px',borderRadius:'8px',fontSize:'12.5px',fontWeight:active?600:500,border:'1px solid '+(active?'#2E54D4':'#E0E3E9'),background:active?'#EEF2FE':'#fff',color:active?'#2E54D4':'#3A4250'}; }
+  checkRow(active){ return {display:'flex',alignItems:'center',gap:'10px',padding:'6px 0',cursor:'pointer'}; }
+  checkBox(active,sm){ const d=sm?'17px':'18px'; return {flex:'0 0 auto',width:d,height:d,borderRadius:'5px',border:'1.5px solid '+(active?'#2E54D4':'#CFD4DC'),background:active?'#2E54D4':'#fff',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:700}; }
+
+  renderVals(){
+    const s=this.state;
+    const gridCols='42px minmax(0,1.7fr) 1.05fr 1.15fr 0.85fr 0.78fr 0.92fr 0.82fr';
+    const filtered=this.applyFilters();
+
+    const stepStyle=(on,done)=>({display:'flex',alignItems:'center',padding:'6px 13px',borderRadius:'8px',fontSize:'12.5px',fontWeight:on?600:500,background:on?'#EEF2FE':'transparent',color:on?'#2E54D4':(done?'#3A4250':'#9AA2AE')});
+
+    const rows=filtered.map(c=>{
+      const sel=!!s.selected[c.id];
+      const hue=this.hues[c.industry]||250;
+      return {
+        ...c,
+        empFmt:this.fmtNum(c.emp),
+        contactsFmt:this.fmtNum(c.contacts),
+        matchFmt:c.verified+'% verified',
+        priceFmt:this.moneyR(this.priceOf(c)),
+        check: sel?'✓':'',
+        toggle:()=>this.toggleRow(c.id),
+        rowStyle:{display:'grid',gridTemplateColumns:gridCols,alignItems:'center',padding:'0 20px',height:'58px',borderBottom:'1px solid #F2F4F6',cursor:'pointer',background:sel?'#F5F8FF':'#fff'},
+        boxStyle:this.checkBox(sel),
+        dotStyle:{flex:'0 0 auto',width:'9px',height:'9px',borderRadius:'50%',background:'oklch(0.62 0.16 '+hue+')'}
+      };
+    });
+
+    const selIds=Object.keys(s.selected).map(Number);
+    const selectedRows=this.companies.filter(c=>s.selected[c.id]).map(c=>{
+      const hue=this.hues[c.industry]||250;
+      return {...c,contactsFmt:this.fmtNum(c.contacts),priceFmt:this.moneyR(this.priceOf(c)),toggle:()=>this.toggleRow(c.id),dotStyle:{flex:'0 0 auto',width:'9px',height:'9px',borderRadius:'50%',background:'oklch(0.62 0.16 '+hue+')'}};
+    });
+
+    const selectedCount=selIds.length;
+    const contactsSelected=selectedRows.reduce((a,c)=>a+c.contacts,0);
+    const subtotal=selectedRows.reduce((a,c)=>a+this.priceOf(c),0);
+    let discPct=0; if(subtotal>=1500)discPct=0.15; else if(subtotal>=600)discPct=0.10; else if(subtotal>=300)discPct=0.05;
+    const discount=subtotal*discPct;
+    const tax=(subtotal-discount)*0.0825;
+    const total=subtotal-discount+tax;
+
+    const industries=[...new Set(this.companies.map(c=>c.industry))].map(name=>{
+      const active=s.inds.includes(name);
+      return {name,count:this.companies.filter(c=>c.industry===name).length,active,check:active?'✓':'',toggle:()=>this.toggleArr('inds',name),rowStyle:this.checkRow(active),boxStyle:this.checkBox(active,true)};
+    });
+    const locations=[...new Set(this.companies.map(c=>c.region))].map(name=>{
+      const active=s.locs.includes(name);
+      return {name,count:this.companies.filter(c=>c.region===name).length,active,check:active?'✓':'',toggle:()=>this.toggleArr('locs',name),rowStyle:this.checkRow(active),boxStyle:this.checkBox(active,true)};
+    });
+    const sizeOptions=this.sizeDefs.map(o=>({label:o.label,set:()=>this.setState({size:o.id}),style:this.chip(s.size===o.id)}));
+    const revOptions=this.revDefs.map(o=>({label:o.label,set:()=>this.setState({rev:o.id}),style:this.chip(s.rev===o.id)}));
+
+    const allSel = filtered.length>0 && filtered.every(c=>s.selected[c.id]);
+    const formats=this.formatDefs.map(f=>{
+      const on=s.formats.includes(f.id);
+      return {label:f.label,desc:f.desc,toggle:()=>this.toggleFormat(f.id),style:{border:'1.5px solid '+(on?'#2E54D4':'#E8EAEF'),background:on?'#F5F8FF':'#fff',borderRadius:'10px',padding:'12px 13px',cursor:'pointer'},tickStyle:{color:on?'#2E54D4':'transparent',fontSize:'13px',fontWeight:700}};
+    });
+
+    const sizeKB=Math.max(2,Math.round(contactsSelected*0.6));
+    const sizeFmt=sizeKB>1024?(sizeKB/1024).toFixed(1)+' MB':sizeKB+' KB';
+    const downloadFiles=this.formatDefs.filter(f=>s.formats.includes(f.id)).map(f=>({
+      name:'veridia_export_'+(s.orderId||'order').toLowerCase()+'.'+(f.id==='crm'?'sync':f.id),
+      ext:f.ext,size:f.id==='crm'?selectedCount+' records queued':sizeFmt+' · '+this.fmtNum(contactsSelected)+' rows',
+      iconStyle:{flex:'0 0 auto',width:'44px',height:'44px',borderRadius:'9px',background:'#EEF2FE',color:'#2E54D4',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:'12px',fontFamily:"'IBM Plex Mono'"}
+    }));
+
+    const continueOn=selectedCount>0;
+    const primary=(on)=>({height:'44px',padding:'0 22px',borderRadius:'9px',border:'none',background:on?'#2E54D4':'#C6CDDA',color:'#fff',fontSize:'14px',fontWeight:600,cursor:on?'pointer':'not-allowed'});
+
+    return {
+      isBrowse:s.step==='browse', isCheckout:s.step==='checkout', isSuccess:s.step==='success',
+      step1Style:stepStyle(s.step==='browse',true),
+      step2Style:stepStyle(s.step==='checkout',s.step==='success'),
+      step3Style:stepStyle(s.step==='success',false),
+      search:s.search, onSearch:e=>this.setState({search:e.target.value}),
+      industries, locations, sizeOptions, revOptions,
+      clearFilters:()=>this.setState({search:'',inds:[],locs:[],size:'any',rev:'any'}),
+      rows, gridCols,
+      filteredCount:filtered.length, totalCount:this.companies.length,
+      filteredContactsFmt:this.fmtNum(filtered.reduce((a,c)=>a+c.contacts,0)),
+      selectAllLabel: allSel?'Deselect all':'Select all '+filtered.length,
+      selectAllStyle:{height:'32px',padding:'0 14px',borderRadius:'7px',border:'1px solid '+(allSel?'#2E54D4':'#D3D8E0'),background:allSel?'#EEF2FE':'#fff',color:allSel?'#2E54D4':'#3A4250',fontSize:'13px',fontWeight:500},
+      selectAllFiltered:()=>this.setState(st=>{ const sel={...st.selected}; if(allSel){ filtered.forEach(c=>delete sel[c.id]); } else { filtered.forEach(c=>sel[c.id]=true); } return {selected:sel}; }),
+      selectedCount, hasSelection:selectedCount>0,
+      contactsSelectedFmt:this.fmtNum(contactsSelected),
+      selectedTotalFmt:this.moneyR(subtotal),
+      clearSelection:()=>this.setState({selected:{}}),
+      continueStyle:primary(continueOn),
+      goCheckout:()=>{ if(continueOn)this.setState({step:'checkout'}); },
+      goBack:()=>this.setState({step:'browse'}),
+      selectedRows, formats,
+      subtotalFmt:this.money(subtotal),
+      discountPct:Math.round(discPct*100)+'%', discountFmt:this.money(discount),
+      taxFmt:this.money(tax), totalFmt:this.money(total),
+      payLabel:'Pay '+this.money(total), payStyle:{...primary(true),width:'100%'},
+      completePurchase:()=>this.setState({step:'success',orderId:'VD-'+Math.floor(100000+Math.random()*899999)}),
+      orderId:s.orderId, downloadFiles,
+      restart:()=>this.setState({step:'browse',selected:{},orderId:''})
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Spin up a local PostgreSQL for development:
+#   docker compose up -d
+# Then from /backend:  npx prisma migrate dev && npm run db:seed
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: prodomatix-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: prodomatix
+    ports:
+      - "5432:5432"
+    volumes:
+      - prodomatix_pgdata:/var/lib/postgresql/data
+
+volumes:
+  prodomatix_pgdata:
