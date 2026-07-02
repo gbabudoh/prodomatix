@@ -123,6 +123,11 @@ export default function BusinessDetailPage() {
   if (!biz) return <DetailSkeleton />;
 
   const owned = biz.owned;
+  // Whether the full record is visible — true for a personal purchase OR the
+  // admin bypass (backend sets locked:false in both cases). Distinct from
+  // `owned`, which specifically means "this user personally bought it" and
+  // must stay accurate for the purchase CTA / "Owned" badge below.
+  const unlocked = !biz.locked;
   const isSelected = !!state.selected[biz.id];
 
   const buyNow = () => {
@@ -159,13 +164,13 @@ export default function BusinessDetailPage() {
           {/* Left: fields */}
           <div>
             <div className="detail-card">
-              <div className="card__head">{owned ? 'Full business record' : 'Preview — unlock for full details'}</div>
+              <div className="card__head">{unlocked ? 'Full business record' : 'Preview — unlock for full details'}</div>
               <div className="detail-fields">
                 <Field label="Supplier type"  value={biz.businessType} />
                 <Field label="Industry"       value={biz.industry} />
                 <Field label="Country"        value={<CountryFlag country={biz.country} />} />
                 <Field label="Region"         value={biz.region} />
-                {owned ? (
+                {unlocked ? (
                   <>
                     <Field label="Location"         value={biz.location} />
                     <Field label="Product / service" value={biz.productOrService} />
@@ -186,13 +191,14 @@ export default function BusinessDetailPage() {
                     <LockedField label="Phone" />
                     <LockedField label="Staff capacity" />
                     <LockedField label="Verified contacts" />
+                    <LockedField label="About" />
                   </>
                 )}
               </div>
             </div>
 
             {/* Contact persons */}
-            {owned && biz.contactPersons?.length > 0 && (
+            {unlocked && biz.contactPersons?.length > 0 && (
               <div className="detail-card" style={{ marginTop: 16 }}>
                 <div className="card__head">Contact persons ({biz.contactPersons.length})</div>
                 <div className="detail-contacts">
