@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BUSINESS_TYPES } from '../../data/options.js';
+import { BUSINESS_TYPES, COUNTRIES } from '../../data/options.js';
 
 const EMPTY = {
   businessName: '', businessType: 'Manufacturer', industry: '', country: '', location: '', region: '',
@@ -80,7 +80,10 @@ export default function BusinessForm({ initial, onSave, onCancel }) {
             </label>
             <label className="field">
               <span>Country (public)</span>
-              <input className="input" value={form.country} onChange={set('country')} />
+              <select className="input" value={form.country} onChange={set('country')}>
+                <option value="">— Select country —</option>
+                {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
             </label>
             <label className="field">
               <span>Region</span>

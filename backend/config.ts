@@ -14,8 +14,29 @@ export const config = {
   stripeSecretKey:     process.env.STRIPE_SECRET_KEY || '',
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
 
+  // Environment
+  isProd: process.env.NODE_ENV === 'production',
+  appUrl: process.env.APP_URL || 'http://localhost:5173',
+
   // CORS — comma-separated list of allowed origins
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',').map(s => s.trim()),
+
+  // Cookie
+  cookieSecret: process.env.COOKIE_SECRET || 'dev-cookie-secret-change-me',
+
+  // Email (SMTP via Nodemailer)
+  email: {
+    host:     process.env.EMAIL_HOST     || '',
+    port:     Number(process.env.EMAIL_PORT)  || 587,
+    secure:   process.env.EMAIL_SECURE   === 'true',
+    user:     process.env.EMAIL_USER     || '',
+    pass:     process.env.EMAIL_PASS     || '',
+    from:     process.env.EMAIL_FROM     || 'Prodomatix <noreply@prodomatix.com>',
+  },
+
+  // Security
+  maxLoginAttempts: 5,
+  lockoutMinutes:   15,
 
   // Google OAuth
   googleClientId: process.env.GOOGLE_CLIENT_ID || '',

@@ -278,9 +278,9 @@ export default function PlatformGuidePage() {
         <div className="hiw-foot__inner">
           <img src="/logo.png" alt="Prodomatix" className="hiw-foot__logo" />
           <div className="hiw-foot__links">
-            <a href="#" className="hiw-foot__link">Privacy Policy</a>
+            <Link to="/privacy-policy" className="hiw-foot__link">Privacy Policy</Link>
             <span className="hiw-foot__sep">·</span>
-            <a href="#" className="hiw-foot__link">Data Policy</a>
+            <Link to="/data-policy" className="hiw-foot__link">Data Policy</Link>
           </div>
           <p className="hiw-foot__copy">© {new Date().getFullYear()} Prodomatix · A subsidiary of Egobas Limited</p>
         </div>

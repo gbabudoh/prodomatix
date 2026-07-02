@@ -77,4 +77,39 @@ router.get('/orders', async (_req, res) => {
   );
 });
 
+// GET /api/admin/audit — paginated audit log (newest first).
+router.get('/audit', async (req, res) => {
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const take = 50;
+  const skip = (page - 1) * take;
+
+  const [total, logs] = await Promise.all([
+    prisma.auditLog.count(),
+    prisma.auditLog.findMany({
+      orderBy: { createdAt: 'desc' },
+      take,
+      skip,
+      include: { user: { select: { email: true, name: true } } },
+    }),
+  ]);
+
+  res.json({
+    logs: logs.map((l) => ({
+      id:         l.id,
+      action:     l.action,
+      resource:   l.resource,
+      resourceId: l.resourceId,
+      ip:         l.ip,
+      userAgent:  l.userAgent,
+      metadata:   l.metadata,
+      createdAt:  l.createdAt,
+      userEmail:  l.user?.email ?? null,
+      userName:   l.user?.name ?? null,
+    })),
+    total,
+    page,
+    pages: Math.ceil(total / take),
+  });
+});
+
 export default router;

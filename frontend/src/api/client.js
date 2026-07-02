@@ -1,22 +1,12 @@
-// Thin fetch wrapper. Attaches the JWT, parses JSON, throws typed errors,
-// and handles binary file downloads. All paths are relative to /api
-// (Vite proxies /api -> http://localhost:4000 in dev).
-
-const TOKEN_KEY = 'prodomatix_token';
-
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
-export const setToken = (t) =>
-  t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY);
+// Thin fetch wrapper. Uses httpOnly cookie auth (credentials: 'include').
+// No token stored in localStorage — the cookie is managed by the browser.
 
 async function request(path, { method = 'GET', body, raw = false } = {}) {
-  const token = getToken();
   const res = await fetch(`/api${path}`, {
     method,
-    headers: {
-      ...(body ? { 'Content-Type': 'application/json' } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
-    },
-    body: body ? JSON.stringify(body) : undefined
+    credentials: 'include',          // sends httpOnly cookie automatically
+    headers: body ? { 'Content-Type': 'application/json' } : {},
+    body: body ? JSON.stringify(body) : undefined,
   });
 
   if (raw) return res;
@@ -32,12 +22,11 @@ async function request(path, { method = 'GET', body, raw = false } = {}) {
 }
 
 export const api = {
-  get: (p) => request(p),
+  get:  (p)       => request(p),
   post: (p, body) => request(p, { method: 'POST', body }),
-  put: (p, body) => request(p, { method: 'PUT', body }),
-  del: (p) => request(p, { method: 'DELETE' }),
+  put:  (p, body) => request(p, { method: 'PUT',  body }),
+  del:  (p)       => request(p, { method: 'DELETE' }),
 
-  // Streams a file response to the browser as a download.
   download: async (p, filename) => {
     const res = await request(p, { raw: true });
     if (!res.ok) {
@@ -45,13 +34,14 @@ export const api = {
       throw new Error(d?.error || 'Download failed.');
     }
     const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
-  }
+  },
 };
+
+// Kept for any code that still imports these — both are now no-ops.
+export const getToken = () => null;
+export const setToken = () => {};

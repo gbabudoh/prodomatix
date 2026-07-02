@@ -3,6 +3,7 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import 'express-async-errors';
 import { config } from './config.ts';
@@ -15,8 +16,25 @@ import paymentRoutes from './routes/payments.ts';
 
 const app = express();
 
-// Security headers
-app.use(helmet());
+// Security headers with CSP
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'", "'unsafe-inline'", 'https://accounts.google.com', 'https://js.stripe.com', 'https://apis.google.com'],
+      styleSrc:    ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc:     ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc:      ["'self'", 'data:', 'https:'],
+      connectSrc:  ["'self'", 'https://api.stripe.com', 'https://accounts.google.com'],
+      frameSrc:    ["'self'", 'https://js.stripe.com', 'https://accounts.google.com'],
+      objectSrc:   ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+}));
+
+app.use(cookieParser(config.cookieSecret));
 
 // CORS — restrict to configured origins only
 app.use(cors({

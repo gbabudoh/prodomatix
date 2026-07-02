@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { requireAuth } from '../middleware/auth.ts';
+import { audit } from '../lib/audit.ts';
 import { getBusinessesByIds, getOwnedBusinessIds } from '../lib/businesses.ts';
 import { summarize, priceOf } from '../lib/pricing.ts';
 
@@ -70,6 +71,7 @@ router.post('/checkout', requireAuth, async (req, res) => {
       return { reference: purchase.reference, purchaseId: purchase.id, isFree, totals: charged };
     });
 
+    await audit(req, 'purchase.checkout', { userId, resource: 'purchase', resourceId: String(result.purchaseId), metadata: { count: businesses.length, isFree: result.isFree } });
     res.status(201).json({ ...result, count: businesses.length });
   } catch (err) {
     if (err instanceof InsufficientCreditsError) {

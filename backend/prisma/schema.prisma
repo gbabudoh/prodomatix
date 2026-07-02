@@ -13,16 +13,44 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  email        String     @unique
-  passwordHash String
-  name         String
-  role         String     @default("user") // 'user' | 'admin'
-  freeCredits  Int        @default(3)
-  createdAt    DateTime   @default(now())
-  purchases    Purchase[]
+  id              Int        @id @default(autoincrement())
+  email           String     @unique
+  passwordHash    String
+  name            String
+  role            String     @default("user")
+  freeCredits     Int        @default(3)
+  // Email verification
+  emailVerified   Boolean    @default(false)
+  verifyToken     String?    @unique
+  // Account lockout
+  loginAttempts   Int        @default(0)
+  lockedUntil     DateTime?
+  // MFA (admin only)
+  mfaSecret       String?
+  mfaEnabled      Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  purchases       Purchase[]
+  auditLogs       AuditLog[]
 
   @@map("users")
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?
+  action     String
+  resource   String?
+  resourceId String?
+  ip         String?
+  userAgent  String?
+  metadata   String?
+  createdAt  DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
 
 model Business {

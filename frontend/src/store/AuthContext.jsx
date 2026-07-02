@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { api, getToken, setToken } from '../api/client.js';
+import { api } from '../api/client.js';
 
 const AuthContext = createContext(null);
 
@@ -7,57 +7,58 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session from a stored token on first load.
+  // On first load: restore session from httpOnly cookie via /auth/me.
   useEffect(() => {
-    if (!getToken()) {
-      setLoading(false);
-      return;
-    }
-    api
-      .get('/auth/me')
+    api.get('/auth/me')
       .then((res) => setUser(res.user))
-      .catch(() => {
-        setToken(null);
-        setUser(null);
-      })
+      .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const res = await api.post('/auth/login', { email, password });
-    setToken(res.token);
+  const login = useCallback(async (email, password, totp) => {
+    const res = await api.post('/auth/login', { email, password, ...(totp ? { totp } : {}) });
+    if (res.mfaRequired) return { mfaRequired: true };
     setUser(res.user);
     return res.user;
   }, []);
 
   const register = useCallback(async (email, password, name) => {
     const res = await api.post('/auth/register', { email, password, name });
-    setToken(res.token);
     setUser(res.user);
     return res.user;
   }, []);
 
-  // Exchange a Google ID token (credential) for our own session.
   const loginWithGoogle = useCallback(async (credential) => {
     const res = await api.post('/auth/google', { credential });
-    setToken(res.token);
     setUser(res.user);
     return res.user;
   }, []);
 
-  const logout = useCallback(() => {
-    setToken(null);
+  const logout = useCallback(async () => {
+    await api.post('/auth/logout', {}).catch(() => {});
     setUser(null);
   }, []);
 
-  // Pull fresh user data (e.g. after free credits are spent).
   const refresh = useCallback(async () => {
     const res = await api.get('/auth/me');
     setUser(res.user);
     return res.user;
   }, []);
 
-  const value = { user, loading, isAdmin: user?.role === 'admin', login, register, loginWithGoogle, logout, refresh };
+  const verifyEmail = useCallback(async (token) => {
+    await api.post('/auth/verify-email', { token });
+    setUser(u => u ? { ...u, emailVerified: true } : u);
+  }, []);
+
+  const resendVerification = useCallback(async () => {
+    await api.post('/auth/resend-verification', {});
+  }, []);
+
+  const value = {
+    user, loading,
+    isAdmin: user?.role === 'admin',
+    login, register, loginWithGoogle, logout, refresh, verifyEmail, resendVerification,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

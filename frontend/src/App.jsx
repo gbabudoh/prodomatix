@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Header from './components/Header.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
@@ -10,13 +11,26 @@ import SuccessPage from './pages/SuccessPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import HowItWorksPage from './pages/HowItWorksPage.jsx';
 import PlatformGuidePage from './pages/PlatformGuidePage.jsx';
+import DataPolicyPage from './pages/DataPolicyPage.jsx';
+import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
 import AdminLoginPage from './pages/admin/AdminLoginPage.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
 import Overview from './pages/admin/sections/Overview.jsx';
 import Businesses from './pages/admin/sections/Businesses.jsx';
 import Users from './pages/admin/sections/Users.jsx';
 import Orders from './pages/admin/sections/Orders.jsx';
+import Audit from './pages/admin/sections/Audit.jsx';
+import Security from './pages/admin/sections/Security.jsx';
 import { useAuth } from './store/AuthContext.jsx';
+import CookieBanner from './components/CookieBanner.jsx';
+
+// Scroll to top on every route change.
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
 
 // Authenticated app shell with header.
 function Shell({ children }) {
@@ -38,10 +52,16 @@ function RootPage() {
 
 export default function App() {
   return (
+    <>
+    <ScrollToTop />
+    <CookieBanner />
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/how-it-works" element={<PlatformGuidePage />} />
+      <Route path="/how-it-works"   element={<PlatformGuidePage />} />
+      <Route path="/verify-email"   element={<VerifyEmailPage />} />
+      <Route path="/data-policy"    element={<DataPolicyPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
 
       <Route path="/" element={<RootPage />} />
@@ -89,9 +109,12 @@ export default function App() {
         <Route path="businesses" element={<Businesses />} />
         <Route path="users" element={<Users />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="audit" element={<Audit />} />
+        <Route path="security" element={<Security />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }

@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { requireAuth } from '../middleware/auth.ts';
+import { audit } from '../lib/audit.ts';
 import { getBusinessesByIds, getOwnedBusinessIds } from '../lib/businesses.ts';
 import { buildExcel, buildPdf } from '../lib/exporters.ts';
 
@@ -30,6 +31,7 @@ router.get('/', requireAuth, async (req, res) => {
   }
 
   if (!ids.length) return res.status(404).json({ error: 'No purchased data to download.' });
+  await audit(req, 'download.file', { resource: 'download', metadata: { format, reference, count: ids.length } });
 
   const businesses = await getBusinessesByIds(ids);
   const base = `prodomatix_${reference.toLowerCase()}`;

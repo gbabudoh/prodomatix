@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'logo.png'],
+      includeAssets: ['favicon.ico', 'favicon.png', 'apple-touch-icon.png', 'logo.png'],
       manifest: {
         name: 'Prodomatix',
         short_name: 'Prodomatix',

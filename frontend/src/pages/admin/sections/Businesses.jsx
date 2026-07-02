@@ -4,6 +4,7 @@ import { useFetch } from '../useFetch.js';
 import { AdminHeader } from '../AdminLayout.jsx';
 import { Icon } from '../../../components/AdminIcons.jsx';
 import { fmtNum, moneyRound } from '../../../lib/format.js';
+import { COUNTRIES } from '../../../data/options.js';
 import BusinessForm from '../BusinessForm.jsx';
 import CountryFlag from '../../../components/CountryFlag.jsx';
 
@@ -84,7 +85,7 @@ export default function Businesses() {
         </select>
         <select className="xselect" value={country} onChange={(e) => setCountry(e.target.value)}>
           <option value="">All countries</option>
-          {opts.countries.map((v) => <option key={v} value={v}>{v}</option>)}
+          {COUNTRIES.map((v) => <option key={v} value={v}>{v}</option>)}
         </select>
         {hasFilters && <button className="xclear" onClick={clearFilters}>Clear</button>}
         <span className="xtoolbar__count">{filtered.length} shown</span>
