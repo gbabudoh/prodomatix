@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo.jsx';
 import './HowItWorksPage.css';
 
 const ROWS = [
@@ -186,6 +187,21 @@ export default function PlatformGuidePage() {
 
   return (
     <div className="hiw">
+      <Seo
+        title="How It Works"
+        description="From first search to downloaded file — see exactly what happens at each step of buying B2B supplier data on Prodomatix."
+        path="/how-it-works"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: 'How to find and download B2B supplier data on Prodomatix',
+          step: STEPS.map((s) => ({
+            '@type': 'HowToStep',
+            name: s.heading,
+            text: s.guide.map((g) => g.body).join(' '),
+          })),
+        }}
+      />
 
       {/* Nav */}
       <nav className="hiw-nav">

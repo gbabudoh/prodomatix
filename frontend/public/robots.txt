@@ -1,0 +1,56 @@
+# Prodomatix — robots.txt
+# Public marketing pages are open to crawl and index. App/account pages
+# (marketplace listings, dashboard, checkout, admin) sit behind auth and
+# are excluded — there's nothing for a crawler to index there anyway.
+
+User-agent: *
+Allow: /
+Disallow: /browse
+Disallow: /business/
+Disallow: /checkout
+Disallow: /success/
+Disallow: /dashboard
+Disallow: /verify-email
+Disallow: /admin
+
+# ── AI assistant / answer-engine crawlers (explicitly allowed) ──
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://prodomatix.com/sitemap.xml

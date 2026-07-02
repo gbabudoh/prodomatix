@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const STORAGE_KEY = 'pdx_cookie_consent';
+export const CONSENT_CHANGED_EVENT = 'pdx:cookie-consent-changed';
 
 const DEFAULT_PREFS = { essential: true, analytics: false, marketing: false };
 
@@ -14,15 +15,35 @@ function loadPrefs() {
 
 function savePrefs(prefs) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...prefs, savedAt: new Date().toISOString() }));
+  window.dispatchEvent(new CustomEvent(CONSENT_CHANGED_EVENT, { detail: prefs }));
 }
 
-export function useCookieConsent() {
+export function getCookieConsent() {
   const prefs = loadPrefs();
   return {
     analytics: prefs?.analytics ?? false,
     marketing: prefs?.marketing ?? false,
     hasConsented: !!prefs,
   };
+}
+
+// React hook variant — re-reads consent whenever the banner (or another tab)
+// changes it, so consumers like the analytics loader can react live instead
+// of only picking up consent on the next full page load.
+export function useCookieConsent() {
+  const [consent, setConsent] = useState(getCookieConsent);
+
+  useEffect(() => {
+    const refresh = () => setConsent(getCookieConsent());
+    window.addEventListener(CONSENT_CHANGED_EVENT, refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener(CONSENT_CHANGED_EVENT, refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
+
+  return consent;
 }
 
 const CATEGORIES = [

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo.jsx';
 
 const YEAR = new Date().getFullYear();
 const EFFECTIVE = 'July 1, 2026';
@@ -15,6 +16,11 @@ function Section({ id, title, children }) {
 export default function PrivacyPolicyPage() {
   return (
     <div className="policy-page">
+      <Seo
+        title="Privacy Policy"
+        description="How Prodomatix collects, uses, stores, and protects your personal information, in compliance with GDPR, UK GDPR, and CCPA."
+        path="/privacy-policy"
+      />
 
       {/* Nav */}
       <nav className="policy-nav">

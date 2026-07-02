@@ -17,12 +17,54 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <title>Prodomatix — B2B Data Marketplace</title>
+
+    <!-- SEO / GEO / AEO defaults (overridden per-page by the Seo component) -->
+    <meta name="description" content="Search, select, and download 28,000+ verified B2B supplier records globally. Filter by industry, country, and type. Pay per record — no subscription. 3 free downloads to start." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://prodomatix.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Prodomatix" />
+    <meta property="og:title" content="Prodomatix — B2B Data Marketplace" />
+    <meta property="og:description" content="Search, select, and download 28,000+ verified B2B supplier records globally. Pay per record — no subscription. 3 free downloads to start." />
+    <meta property="og:url" content="https://prodomatix.com/" />
+    <meta property="og:image" content="https://prodomatix.com/pwa-512x512.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Prodomatix — B2B Data Marketplace" />
+    <meta name="twitter:description" content="Search, select, and download 28,000+ verified B2B supplier records globally. Pay per record — no subscription. 3 free downloads to start." />
+    <meta name="twitter:image" content="https://prodomatix.com/pwa-512x512.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Structured data: describes the organization + site to search/AI engines (GEO/AEO/LLMO) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Prodomatix",
+        "url": "https://prodomatix.com",
+        "logo": "https://prodomatix.com/pwa-512x512.png",
+        "description": "Prodomatix is a B2B data marketplace where businesses search, select, and download verified supplier records — pay per record, no subscription.",
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Egobas Limited"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Prodomatix",
+        "url": "https://prodomatix.com"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

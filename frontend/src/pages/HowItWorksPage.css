@@ -407,6 +407,26 @@
 }
 .hiw-pricing__discount strong { color: #2e54d4; }
 
+/* ── FAQ ────────────────────────────────────────────────────────────────────── */
+.hiw-faq { padding: 80px 48px; max-width: 780px; margin: 0 auto; text-align: center; }
+.hiw-faq .hiw-h2 { margin-bottom: 32px; }
+.hiw-faq__list { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.hiw-faq__item {
+  background: #fff; border: 1px solid #e3e6eb; border-radius: 12px;
+  padding: 18px 22px;
+}
+.hiw-faq__q {
+  cursor: pointer; font-size: 15.5px; font-weight: 600; color: #181b22;
+  list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.hiw-faq__q::-webkit-details-marker { display: none; }
+.hiw-faq__q::after {
+  content: '+'; flex: 0 0 auto; font-size: 20px; font-weight: 400; color: #8a93a1;
+  transition: transform .15s;
+}
+.hiw-faq__item[open] .hiw-faq__q::after { transform: rotate(45deg); }
+.hiw-faq__a { font-size: 14px; color: #616b7a; line-height: 1.65; margin-top: 12px; }
+
 /* ── CTA ────────────────────────────────────────────────────────────────────── */
 .hiw-cta {
   text-align: center; padding: 80px 48px;
@@ -545,6 +565,12 @@
   /* ── Pricing ── */
   .hiw-pricing { padding: 48px 20px; }
   .hiw-pricing__cards { grid-template-columns: 1fr; gap: 16px; }
+
+  /* ── FAQ ── */
+  .hiw-faq { padding: 48px 20px; }
+  .hiw-faq__item { padding: 14px 16px; }
+  .hiw-faq__q { font-size: 14px; }
+  .hiw-faq__a { font-size: 13.5px; }
 
   /* ── CTA ── */
   .hiw-cta { padding: 48px 20px; }

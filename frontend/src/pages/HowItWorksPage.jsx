@@ -1,6 +1,34 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo.jsx';
 import './HowItWorksPage.css';
+
+const FAQS = [
+  {
+    q: 'What is Prodomatix?',
+    a: 'Prodomatix is a B2B data marketplace. You search, filter, and download verified supplier records — pay per record, with no subscription or commitment.',
+  },
+  {
+    q: 'How much does it cost to download supplier data?',
+    a: 'Records cost between $49 and $199 each, shown upfront before you buy. Volume discounts apply automatically: 5% off orders over $300, 10% off over $600, and 15% off over $1,500.',
+  },
+  {
+    q: 'Do I need a credit card or subscription to try it?',
+    a: 'No. Every new account gets 3 free download credits with no credit card required. After that, you pay only for the individual records you select — there is no subscription or monthly minimum.',
+  },
+  {
+    q: 'What file formats do I get?',
+    a: 'Every purchase includes a formatted Excel workbook (.xlsx) and a print-ready PDF, generated instantly at checkout. Both are saved to your dashboard so you can re-download them anytime, with no expiry.',
+  },
+  {
+    q: 'What data fields are included?',
+    a: 'Business name, supplier type, industry, country, and region are visible before you buy. Full details — address, website, email, phone, staff count, revenue, and verified contact persons — unlock instantly after purchase.',
+  },
+  {
+    q: 'Is Prodomatix GDPR and CCPA compliant?',
+    a: 'Yes. Prodomatix complies with GDPR, UK GDPR, and CCPA. See the Privacy Policy and Data Policy pages for full details on data sourcing, use, and retention.',
+  },
+];
 
 // ── Hooks ────────────────────────────────────────────────────────────────────
 function useInView(threshold = 0.18) {
@@ -248,6 +276,37 @@ export default function HowItWorksPage() {
 
   return (
     <div className="hiw">
+      <Seo
+        description="Search, select, and download 28,000+ verified B2B supplier records globally. Filter by industry, country, and type. Pay per record — no subscription. 3 free downloads to start."
+        path="/"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Service',
+              serviceType: 'B2B supplier data marketplace',
+              provider: { '@type': 'Organization', name: 'Prodomatix' },
+              areaServed: 'Worldwide',
+              description: 'Search, select, and download verified B2B supplier records. Pay per record, no subscription.',
+              offers: {
+                '@type': 'AggregateOffer',
+                priceCurrency: 'USD',
+                lowPrice: '49',
+                highPrice: '199',
+                offerCount: '28000',
+              },
+            },
+            {
+              '@type': 'FAQPage',
+              mainEntity: FAQS.map((f) => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: { '@type': 'Answer', text: f.a },
+              })),
+            },
+          ],
+        }}
+      />
 
       {/* Nav */}
       <nav className="hiw-nav">
@@ -432,6 +491,20 @@ export default function HowItWorksPage() {
               <div className="hiw-pricing__discount"><strong>15% off</strong> orders over $1,500</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="hiw-faq">
+        <div className="hiw-section-label">FAQ</div>
+        <h2 className="hiw-h2">Frequently asked questions</h2>
+        <div className="hiw-faq__list">
+          {FAQS.map((f) => (
+            <details className="hiw-faq__item" key={f.q}>
+              <summary className="hiw-faq__q">{f.q}</summary>
+              <p className="hiw-faq__a">{f.a}</p>
+            </details>
+          ))}
         </div>
       </section>
 

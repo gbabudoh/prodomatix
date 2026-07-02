@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo.jsx';
 
 const YEAR = new Date().getFullYear();
 const EFFECTIVE = 'July 1, 2026';
@@ -15,6 +16,11 @@ function Section({ id, title, children }) {
 export default function DataPolicyPage() {
   return (
     <div className="policy-page">
+      <Seo
+        title="Data Policy"
+        description="How Prodomatix sources, verifies, and lets you use B2B supplier data — accuracy standards, licensing, and usage terms."
+        path="/data-policy"
+      />
 
       {/* Nav */}
       <nav className="policy-nav">

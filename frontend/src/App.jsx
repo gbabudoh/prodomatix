@@ -25,6 +25,7 @@ import Security from './pages/admin/sections/Security.jsx';
 import Insights from './pages/admin/sections/Insights.jsx';
 import { useAuth } from './store/AuthContext.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
+import Analytics from './components/Analytics.jsx';
 
 // Scroll to top on every route change.
 function ScrollToTop() {
@@ -55,6 +56,7 @@ export default function App() {
   return (
     <>
     <ScrollToTop />
+    <Analytics />
     <CookieBanner />
     <Routes>
       <Route path="/login" element={<LoginPage />} />
