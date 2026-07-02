@@ -38,12 +38,12 @@ export default function Users() {
         {filtered.map((u) => (
           <div className="xtable__row xtable__row--user" key={u.id}>
             <div className="xcell-strong">{u.name}</div>
-            <div className="cell cell--mono">{u.email}</div>
-            <div className="cell">{u.role === 'admin' ? <span className="badge badge--blue">admin</span> : 'user'}</div>
-            <div className="cell cell--mono">{fmtNum(u.freeCredits)}</div>
-            <div className="cell cell--mono">{fmtNum(u.orders)}</div>
-            <div className="cell--price">{money(u.spent)}</div>
-            <div className="cell">{fmtDate(u.createdAt)}</div>
+            <div className="cell cell--mono" data-label="Email">{u.email}</div>
+            <div className="cell" data-label="Role">{u.role === 'admin' ? <span className="badge badge--blue">admin</span> : 'user'}</div>
+            <div className="cell cell--mono" data-label="Credits">{fmtNum(u.freeCredits)}</div>
+            <div className="cell cell--mono" data-label="Orders">{fmtNum(u.orders)}</div>
+            <div className="cell--price" data-label="Spent">{money(u.spent)}</div>
+            <div className="cell" data-label="Joined">{fmtDate(u.createdAt)}</div>
           </div>
         ))}
         {filtered.length === 0 && <div className="xempty">No users match.</div>}

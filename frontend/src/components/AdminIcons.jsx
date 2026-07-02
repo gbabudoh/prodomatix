@@ -13,7 +13,9 @@ const PATHS = {
   dollar: <><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></>,
   audit: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M8 13h8M8 17h5" /></>,
   lock:     <><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>,
-  insights: <><path d="M2 20h20M6 20V10M12 20V4M18 20v-6" /></>
+  insights: <><path d="M2 20h20M6 20V10M12 20V4M18 20v-6" /></>,
+  menu:  <><path d="M4 6h16M4 12h16M4 18h16" /></>,
+  close: <><path d="M18 6 6 18" /><path d="M6 6l12 12" /></>
 };
 
 export function Icon({ name, size = 18 }) {

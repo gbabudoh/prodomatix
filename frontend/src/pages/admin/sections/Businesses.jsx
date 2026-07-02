@@ -100,11 +100,11 @@ export default function Businesses() {
         {filtered.map((b) => (
           <div className="xtable__row xtable__row--biz" key={b.id}>
             <div className="xcell-strong">{b.businessName}</div>
-            <div className="cell">{b.businessType}</div>
-            <div className="cell">{b.industry}</div>
-            <div className="cell"><CountryFlag country={b.country} /></div>
-            <div className="cell cell--mono">{fmtNum(b.staffCapacity)}</div>
-            <div className="cell--price">{moneyRound(b.price)}</div>
+            <div className="cell" data-label="Type">{b.businessType}</div>
+            <div className="cell" data-label="Industry">{b.industry}</div>
+            <div className="cell" data-label="Country"><CountryFlag country={b.country} /></div>
+            <div className="cell cell--mono" data-label="Staff">{fmtNum(b.staffCapacity)}</div>
+            <div className="cell--price" data-label="Price">{moneyRound(b.price)}</div>
             <div className="xactions">
               <button className="iconbtn" title="Edit" onClick={() => setEditing(b)}><Icon name="edit" size={15} /></button>
               <button className="iconbtn iconbtn--danger" title="Delete" onClick={() => remove(b)}><Icon name="trash" size={15} /></button>

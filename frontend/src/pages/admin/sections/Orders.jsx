@@ -38,11 +38,11 @@ export default function Orders() {
         {filtered.map((o) => (
           <div className="xtable__row xtable__row--order" key={o.id}>
             <div className="xcell-strong mono">{o.reference}</div>
-            <div className="cell cell--mono">{o.userEmail}</div>
-            <div className="cell cell--mono">{fmtNum(o.records)}</div>
-            <div className="cell">{o.isFree ? <span className="badge badge--green">Free</span> : 'Paid'}</div>
-            <div className="cell--price">{money(Number(o.total))}</div>
-            <div className="cell">{fmtDate(o.createdAt)}</div>
+            <div className="cell cell--mono" data-label="User">{o.userEmail}</div>
+            <div className="cell cell--mono" data-label="Records">{fmtNum(o.records)}</div>
+            <div className="cell" data-label="Type">{o.isFree ? <span className="badge badge--green">Free</span> : 'Paid'}</div>
+            <div className="cell--price" data-label="Total">{money(Number(o.total))}</div>
+            <div className="cell" data-label="Date">{fmtDate(o.createdAt)}</div>
           </div>
         ))}
         {filtered.length === 0 && <div className="xempty">No orders match.</div>}

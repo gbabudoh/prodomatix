@@ -97,7 +97,7 @@ export default function Security() {
                   Protect your admin account with an authenticator app (Google Authenticator, Authy, 1Password, etc.).
                   Each login will require a time-based one-time code in addition to your password.
                 </p>
-                <div style={{ display: 'flex', gap: 10 }}>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                   <button className="btn btn--primary" onClick={startSetup} disabled={busy}>
                     {busy ? 'Loading…' : 'Set up MFA'}
                   </button>
@@ -121,7 +121,7 @@ export default function Security() {
                   </div>
                 )}
                 {secret && (
-                  <div style={{ background: 'var(--bg2)', borderRadius: 6, padding: '8px 12px', fontSize: 13 }}>
+                  <div style={{ background: 'var(--bg2)', borderRadius: 6, padding: '8px 12px', fontSize: 13, wordBreak: 'break-all' }}>
                     <span style={{ color: 'var(--sub)' }}>Manual key: </span>
                     <span className="mono">{secret}</span>
                   </div>
@@ -142,7 +142,7 @@ export default function Security() {
                       required
                     />
                   </label>
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                     <button className="btn btn--primary" disabled={busy || totpCode.length !== 6}>
                       {busy ? 'Confirming…' : 'Confirm & enable'}
                     </button>
@@ -171,7 +171,7 @@ export default function Security() {
                       autoFocus
                     />
                   </label>
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                     <button className="btn btn--danger" disabled={busy || !password}>
                       {busy ? 'Disabling…' : 'Disable MFA'}
                     </button>

@@ -65,7 +65,7 @@ export default function Audit() {
 
         {!loading && logs.length > 0 && (
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <table className="ins-table">
               <thead>
                 <tr style={{ background: 'var(--bg2)', textAlign: 'left' }}>
                   <th style={th}>Action</th>
@@ -79,20 +79,20 @@ export default function Audit() {
                 {logs.map((l) => (
                   <tr key={l.id} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={td}><ActionBadge action={l.action} /></td>
-                    <td style={td}>
+                    <td style={td} data-label="User">
                       {l.userEmail
                         ? <span title={l.userName ?? ''}>{l.userEmail}</span>
                         : <span style={{ color: 'var(--sub)' }}>—</span>}
                     </td>
-                    <td style={td}>
+                    <td style={td} data-label="Resource">
                       {l.resource
                         ? <span className="mono" style={{ fontSize: 12 }}>{l.resource}{l.resourceId ? ` #${l.resourceId}` : ''}</span>
                         : <span style={{ color: 'var(--sub)' }}>—</span>}
                     </td>
-                    <td style={td}>
+                    <td style={td} data-label="IP">
                       <span className="mono" style={{ fontSize: 12 }}>{l.ip ?? '—'}</span>
                     </td>
-                    <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--sub)' }}>
+                    <td style={{ ...td, whiteSpace: 'nowrap', color: 'var(--sub)' }} data-label="When">
                       {fmtDate(l.createdAt)}
                     </td>
                   </tr>

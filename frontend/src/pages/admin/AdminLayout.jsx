@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../store/AuthContext.jsx';
 import { Icon } from '../../components/AdminIcons.jsx';
@@ -21,24 +22,44 @@ const initials = (name = '') =>
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [navOpen, setNavOpen] = useState(false);
 
   const onLogout = () => {
     logout();
     navigate('/admin/login', { replace: true });
   };
 
+  const closeNav = () => setNavOpen(false);
+
   return (
-    <div className="adminx">
+    <div className={'adminx' + (navOpen ? ' adminx--nav-open' : '')}>
+      <header className="adminx__mobilebar">
+        <button className="adminx__navtoggle" aria-label="Open menu" onClick={() => setNavOpen(true)}>
+          <Icon name="menu" size={20} />
+        </button>
+        <div className="adminx__brandgroup">
+          <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 22, flexShrink: 0 }} />
+          <span className="adminx__brandtag">Admin Console</span>
+        </div>
+      </header>
+
+      {navOpen && <div className="adminx__scrim" onClick={closeNav} />}
+
       <aside className="adminx__side">
         <div className="adminx__brand">
-          <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 24 }} />
-          <span className="adminx__brandtag">Admin Console</span>
+          <div className="adminx__brandgroup">
+            <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 24, flexShrink: 0 }} />
+            <span className="adminx__brandtag">Admin Console</span>
+          </div>
+          <button className="adminx__navclose" aria-label="Close menu" onClick={closeNav}>
+            <Icon name="close" size={18} />
+          </button>
         </div>
 
         <nav className="adminx__nav">
           <div className="adminx__nav-label">Main</div>
           {NAV_MAIN.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.end}
+            <NavLink key={n.to} to={n.to} end={n.end} onClick={closeNav}
               className={({ isActive }) => 'adminx__navitem' + (isActive ? ' is-active' : '')}>
               <Icon name={n.icon} size={16} />
               <span>{n.label}</span>
@@ -47,7 +68,7 @@ export default function AdminLayout() {
 
           <div className="adminx__nav-label" style={{ marginTop: 12 }}>System</div>
           {NAV_SYSTEM.map((n) => (
-            <NavLink key={n.to} to={n.to}
+            <NavLink key={n.to} to={n.to} onClick={closeNav}
               className={({ isActive }) => 'adminx__navitem' + (isActive ? ' is-active' : '')}>
               <Icon name={n.icon} size={16} />
               <span>{n.label}</span>

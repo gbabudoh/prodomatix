@@ -21,7 +21,7 @@ function TabBar({ tabs, active, onChange }) {
 function ScoreBar({ value }) {
   const colour = value >= 80 ? '#16a34a' : value >= 55 ? '#d97706' : '#dc2626';
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 90 }}>
       <div style={{ flex: 1, height: 6, background: '#e9ecf0', borderRadius: 4, overflow: 'hidden' }}>
         <div style={{ width: `${value}%`, height: '100%', background: colour, borderRadius: 4, transition: 'width .4s' }} />
       </div>
@@ -58,19 +58,21 @@ function QualityTab() {
       <div className="xpanel">
         <div className="xpanel__head"><span>Supplier quality scores</span><span style={{ fontSize: 12, color: 'var(--sub)' }}>Lowest first — fix these</span></div>
         {loading && <div className="xempty">Computing…</div>}
-        <table className="ins-table">
-          <thead><tr><th>Supplier</th><th>Industry</th><th>Country</th><th style={{ width: 200 }}>Completeness</th></tr></thead>
-          <tbody>
-            {rows.map(r => (
-              <tr key={r.id}>
-                <td className="ins-td--strong">{r.businessName}</td>
-                <td>{r.industry}</td>
-                <td>{r.country}</td>
-                <td><ScoreBar value={r.score} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="ins-table">
+            <thead><tr><th>Supplier</th><th>Industry</th><th>Country</th><th style={{ width: 200 }}>Completeness</th></tr></thead>
+            <tbody>
+              {rows.map(r => (
+                <tr key={r.id}>
+                  <td className="ins-td--strong">{r.businessName}</td>
+                  <td data-label="Industry">{r.industry}</td>
+                  <td data-label="Country">{r.country}</td>
+                  <td data-label="Completeness"><ScoreBar value={r.score} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -93,24 +95,26 @@ function DuplicatesTab() {
         <div className="xpanel__head"><span>Duplicate candidates</span><span style={{ fontSize: 12, color: 'var(--sub)' }}>Jaccard name similarity ≥ 40%</span></div>
         {loading && <div className="xempty">Scanning…</div>}
         {!loading && pairs.length === 0 && <div className="xempty">No duplicates detected. Catalogue looks clean.</div>}
-        <table className="ins-table">
-          <thead><tr><th>Record A</th><th>Record B</th><th>Name similarity</th><th>Email match</th><th>Confidence</th></tr></thead>
-          <tbody>
-            {pairs.map((p, i) => (
-              <tr key={i}>
-                <td><div className="ins-td--strong">{p.a.businessName}</div><div className="ins-td--sub">{p.a.country}</div></td>
-                <td><div className="ins-td--strong">{p.b.businessName}</div><div className="ins-td--sub">{p.b.country}</div></td>
-                <td><span className="mono">{(p.nameScore * 100).toFixed(0)}%</span></td>
-                <td>{p.emailMatch ? <span style={{ color: '#dc2626', fontWeight: 700 }}>Yes</span> : '—'}</td>
-                <td>
-                  <span style={{ fontWeight: 700, color: p.confidence >= 0.7 ? '#dc2626' : '#d97706' }}>
-                    {(p.confidence * 100).toFixed(0)}%
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="ins-table">
+            <thead><tr><th>Record A</th><th>Record B</th><th>Name similarity</th><th>Email match</th><th>Confidence</th></tr></thead>
+            <tbody>
+              {pairs.map((p, i) => (
+                <tr key={i}>
+                  <td data-label="Record A"><div className="ins-td--strong">{p.a.businessName}</div><div className="ins-td--sub">{p.a.country}</div></td>
+                  <td data-label="Record B"><div className="ins-td--strong">{p.b.businessName}</div><div className="ins-td--sub">{p.b.country}</div></td>
+                  <td data-label="Name similarity"><span className="mono">{(p.nameScore * 100).toFixed(0)}%</span></td>
+                  <td data-label="Email match">{p.emailMatch ? <span style={{ color: '#dc2626', fontWeight: 700 }}>Yes</span> : '—'}</td>
+                  <td data-label="Confidence">
+                    <span style={{ fontWeight: 700, color: p.confidence >= 0.7 ? '#dc2626' : '#d97706' }}>
+                      {(p.confidence * 100).toFixed(0)}%
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -137,25 +141,27 @@ function RFMTab() {
       <div className="xpanel">
         <div className="xpanel__head"><span>User RFM scores</span><span style={{ fontSize: 12, color: 'var(--sub)' }}>Recency · Frequency · Monetary (1–5 each)</span></div>
         {loading && <div className="xempty">Scoring…</div>}
-        <table className="ins-table">
-          <thead><tr><th>User</th><th>Segment</th><th>R</th><th>F</th><th>M</th><th>RFM</th><th>Last purchase</th><th>Orders</th><th className="ins-td--right">Spent</th></tr></thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.userId}>
-                <td><div className="ins-td--strong">{u.name}</div><div className="ins-td--sub">{u.email}</div></td>
-                <td><SegBadge segment={u.segment} /></td>
-                <td className="mono">{u.r}</td>
-                <td className="mono">{u.f}</td>
-                <td className="mono">{u.m}</td>
-                <td><span className="mono" style={{ fontWeight: 700 }}>{u.rfm}</span></td>
-                <td style={{ color: 'var(--sub)', fontSize: 12 }}>{u.lastPurchase ? fmtDate(u.lastPurchase) : '—'}</td>
-                <td className="mono">{u.purchaseCount}</td>
-                <td className="ins-td--right">{money(u.totalSpend)}</td>
-              </tr>
-            ))}
-            {!loading && users.length === 0 && <tr><td colSpan={9}><div className="xempty">No user purchase data yet.</div></td></tr>}
-          </tbody>
-        </table>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="ins-table">
+            <thead><tr><th>User</th><th>Segment</th><th>R</th><th>F</th><th>M</th><th>RFM</th><th>Last purchase</th><th>Orders</th><th className="ins-td--right">Spent</th></tr></thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.userId}>
+                  <td><div className="ins-td--strong">{u.name}</div><div className="ins-td--sub">{u.email}</div></td>
+                  <td data-label="Segment"><SegBadge segment={u.segment} /></td>
+                  <td className="mono" data-label="R">{u.r}</td>
+                  <td className="mono" data-label="F">{u.f}</td>
+                  <td className="mono" data-label="M">{u.m}</td>
+                  <td data-label="RFM"><span className="mono" style={{ fontWeight: 700 }}>{u.rfm}</span></td>
+                  <td style={{ color: 'var(--sub)', fontSize: 12 }} data-label="Last purchase">{u.lastPurchase ? fmtDate(u.lastPurchase) : '—'}</td>
+                  <td className="mono" data-label="Orders">{u.purchaseCount}</td>
+                  <td className="ins-td--right" data-label="Spent">{money(u.totalSpend)}</td>
+                </tr>
+              ))}
+              {!loading && users.length === 0 && <tr><td colSpan={9}><div className="xempty">No user purchase data yet.</div></td></tr>}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -179,25 +185,27 @@ function AnomaliesTab() {
         <div className="xpanel__head"><span>Anomaly detection</span><span style={{ fontSize: 12, color: 'var(--sub)' }}>Z-score ≥ 2σ above mean rate</span></div>
         {loading && <div className="xempty">Analysing…</div>}
         {!loading && users.length === 0 && <div className="xempty">No user activity to analyse yet.</div>}
-        <table className="ins-table">
-          <thead><tr><th>User</th><th>Status</th><th>Purchases/day</th><th>Purchase Z</th><th>Downloads/day</th><th>Download Z</th><th>Flags</th></tr></thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.userId} style={{ background: u.flagged ? '#fff5f5' : undefined }}>
-                <td><div className="ins-td--strong">{u.name}</div><div className="ins-td--sub">{u.email}</div></td>
-                <td>{u.flagged
-                  ? <span style={{ color: '#dc2626', fontWeight: 700, fontSize: 12 }}>⚠ Flagged</span>
-                  : <span style={{ color: '#16a34a', fontSize: 12 }}>Normal</span>}
-                </td>
-                <td className="mono">{u.purchasesPerDay}</td>
-                <td className="mono" style={{ color: u.purchaseZ > 2 ? '#dc2626' : 'inherit' }}>{u.purchaseZ}σ</td>
-                <td className="mono">{u.downloadsPerDay}</td>
-                <td className="mono" style={{ color: u.downloadZ > 2 ? '#dc2626' : 'inherit' }}>{u.downloadZ}σ</td>
-                <td style={{ fontSize: 12, color: '#dc2626' }}>{u.reasons?.join('; ') || '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="ins-table">
+            <thead><tr><th>User</th><th>Status</th><th>Purchases/day</th><th>Purchase Z</th><th>Downloads/day</th><th>Download Z</th><th>Flags</th></tr></thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.userId} style={{ background: u.flagged ? '#fff5f5' : undefined }}>
+                  <td><div className="ins-td--strong">{u.name}</div><div className="ins-td--sub">{u.email}</div></td>
+                  <td data-label="Status">{u.flagged
+                    ? <span style={{ color: '#dc2626', fontWeight: 700, fontSize: 12 }}>⚠ Flagged</span>
+                    : <span style={{ color: '#16a34a', fontSize: 12 }}>Normal</span>}
+                  </td>
+                  <td className="mono" data-label="Purchases/day">{u.purchasesPerDay}</td>
+                  <td className="mono" style={{ color: u.purchaseZ > 2 ? '#dc2626' : 'inherit' }} data-label="Purchase Z">{u.purchaseZ}σ</td>
+                  <td className="mono" data-label="Downloads/day">{u.downloadsPerDay}</td>
+                  <td className="mono" style={{ color: u.downloadZ > 2 ? '#dc2626' : 'inherit' }} data-label="Download Z">{u.downloadZ}σ</td>
+                  <td style={{ fontSize: 12, color: '#dc2626' }} data-label="Flags">{u.reasons?.join('; ') || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
