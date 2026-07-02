@@ -28,7 +28,7 @@
   background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
   border-bottom: 1px solid #e8edf8;
 }
-.hiw-nav__logo { height: 22px; display: block; }
+.hiw-nav__logo { height: 27px; display: block; }
 .hiw-nav__links { display: flex; align-items: center; gap: 12px; }
 .hiw-nav__link {
   font-size: 13.5px; font-weight: 500; color: #616b7a; text-decoration: none;
@@ -559,7 +559,7 @@
 /* ── Page footer ────────────────────────────────────────────────────────────── */
 .hiw-foot { border-top: 1px solid #e3e6eb; padding: 32px 48px; background: #fff; }
 .hiw-foot__inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
-.hiw-foot__logo { height: 20px; }
+.hiw-foot__logo { height: 24px; }
 .hiw-foot__links { display: flex; align-items: center; gap: 10px; }
 .hiw-foot__link { font-size: 12.5px; color: #8a93a1; text-decoration: none; }
 .hiw-foot__link:hover { color: #2e54d4; }
@@ -579,7 +579,7 @@
     padding-left: calc(14px + env(safe-area-inset-left));
     padding-right: calc(10px + env(safe-area-inset-right));
   }
-  .hiw-nav__logo { height: 18px; }
+  .hiw-nav__logo { height: 21px; }
   .hiw-nav__links { display: none; }
   .hiw-nav__toggle { display: flex; }
   .hiw-navdrawer__scrim { display: block; }

@@ -38,7 +38,7 @@ export default function AdminLayout() {
           <Icon name="menu" size={20} />
         </button>
         <div className="adminx__brandgroup">
-          <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 22, flexShrink: 0 }} />
+          <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 24, flexShrink: 0 }} />
           <span className="adminx__brandtag">Admin Console</span>
         </div>
       </header>
@@ -48,7 +48,7 @@ export default function AdminLayout() {
       <aside className="adminx__side">
         <div className="adminx__brand">
           <div className="adminx__brandgroup">
-            <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 24, flexShrink: 0 }} />
+            <img src="/logo.png" alt="Prodomatix" className="brand-logo" style={{ height: 28, flexShrink: 0 }} />
             <span className="adminx__brandtag">Admin Console</span>
           </div>
           <button className="adminx__navclose" aria-label="Close menu" onClick={closeNav}>
