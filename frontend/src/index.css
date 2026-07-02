@@ -37,17 +37,37 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body, #root { height: 100%; }
+html, body, #root { height: 100%; height: 100dvh; }
+
+/* Stops iOS Safari's elastic rubber-band bounce past any edge (and
+   Chrome/Android pull-to-refresh, which uses the same mechanism) — in
+   standalone PWA mode this bounce can leave a stray gap of canvas
+   background below the footer instead of snapping back cleanly. */
+html, body {
+  overscroll-behavior: none;
+  background: var(--bg);
+}
 
 body {
   font-family: 'IBM Plex Sans', system-ui, sans-serif;
   color: var(--ink);
-  background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button { font-family: inherit; cursor: pointer; }
 input { font-family: inherit; outline: none; }
+
+/* Native-app feel: no text-selection callout menu or blue tap-select on
+   interactive chrome (nav, buttons, links). Deliberately NOT applied
+   body-wide — this is a data marketplace, so table cells, emails, phone
+   numbers, and policy/FAQ text must stay selectable and copyable. */
+button, a, [role="button"] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
 
 ::-webkit-scrollbar { width: 11px; height: 11px; }
 ::-webkit-scrollbar-thumb { background: #d3d8e0; border-radius: 6px; border: 3px solid var(--bg); }
@@ -56,7 +76,12 @@ input { font-family: inherit; outline: none; }
 .mono { font-family: var(--mono); }
 
 /* ---------- App shell ---------- */
-.app { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.app {
+  height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
 
 /* ---------- Header ---------- */
 .header {
@@ -446,6 +471,9 @@ input { font-family: inherit; outline: none; }
 /* ── Auth page wrapper + site footer ─────────────────────────────────────── */
 .auth-page {
   display: flex; flex-direction: column; min-height: 100vh; background: var(--bg);
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 .auth-page .auth { flex: 1; }
 .auth-page__topbar {
@@ -746,7 +774,12 @@ input { font-family: inherit; outline: none; }
 /* ============================================================
    Admin Console Layout
    ============================================================ */
-.adminx { height: 100vh; display: flex; background: #f4f6fa; overflow: hidden; }
+.adminx {
+  height: 100vh; display: flex; background: #f4f6fa; overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
 
 /* ── Mobile top bar / nav toggle (hidden on desktop) ───── */
 .adminx__mobilebar { display: none; }
@@ -975,6 +1008,9 @@ input { font-family: inherit; outline: none; }
   .adminx__side {
     position: fixed; top: 0; left: 0; bottom: 0; z-index: 40;
     width: 86vw; max-width: 320px; flex: none;
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    padding-left: calc(12px + env(safe-area-inset-left));
     transform: translateX(-100%);
     transition: transform .22s ease;
     box-shadow: 10px 0 30px rgba(20, 30, 60, .2);
@@ -1650,7 +1686,7 @@ input { font-family: inherit; outline: none; }
 @media (max-width: 768px) {
 
   /* ── App shell ── */
-  .app { height: 100%; min-height: 100vh; overflow: auto; }
+  .app { height: 100%; min-height: 100vh; min-height: 100dvh; overflow: auto; }
 
   /* ── Header ── */
   .header { padding: 0 10px; gap: 6px; height: 52px; flex: 0 0 52px; }
@@ -1744,15 +1780,18 @@ input { font-family: inherit; outline: none; }
   .page-btn { height: 28px; padding: 0 10px; font-size: 12px; }
 
   /* ── Selection bar ── */
-  /* Selection bar — fixed to bottom of screen */
+  /* Selection bar — fixed to bottom of screen. Grows to clear the iPhone
+     home-indicator gesture area (env() resolves to 0 on non-notched
+     devices, so this is a no-op there). */
   .selbar {
     position: fixed; bottom: 0; left: 0; right: 0;
-    z-index: 50; height: 64px; padding: 0 14px;
+    z-index: 50; height: calc(64px + env(safe-area-inset-bottom));
+    padding: 0 calc(14px + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(14px + env(safe-area-inset-left));
     box-shadow: 0 -4px 20px rgba(20,30,60,.12);
   }
   /* Prevent last rows from hiding behind fixed bar */
-  .table__body { padding-bottom: 70px; }
-  .pagination { margin-bottom: 70px; }
+  .table__body { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+  .pagination { margin-bottom: calc(70px + env(safe-area-inset-bottom)); }
 
   .selbar__group { display: none; }
   .selbar__right { gap: 12px; flex: 1; justify-content: space-between; }
@@ -1806,12 +1845,17 @@ input { font-family: inherit; outline: none; }
 /* ============================================================
    Policy pages (Data Policy, Privacy Policy)
    ============================================================ */
-.policy-page { min-height: 100vh; background: var(--bg); font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+.policy-page {
+  min-height: 100vh; background: var(--bg); font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  padding-top: env(safe-area-inset-top);
+}
 
 .policy-nav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px; height: 56px; background: #fff; border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 10;
+  padding-left: calc(40px + env(safe-area-inset-left));
+  padding-right: calc(40px + env(safe-area-inset-right));
+  position: sticky; top: 0; top: env(safe-area-inset-top); z-index: 10;
 }
 .policy-nav__logo { height: 20px; display: block; }
 .policy-nav__back {
@@ -1900,6 +1944,9 @@ input { font-family: inherit; outline: none; }
   align-items: flex-end;
   justify-content: center;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  padding-left: calc(20px + env(safe-area-inset-left));
+  padding-right: calc(20px + env(safe-area-inset-right));
 }
 
 .ck {
@@ -2111,7 +2158,12 @@ input { font-family: inherit; outline: none; }
 
 /* Mobile */
 @media (max-width: 600px) {
-  .ck-backdrop { padding: 12px; }
+  .ck-backdrop {
+    padding: 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    padding-left: calc(12px + env(safe-area-inset-left));
+    padding-right: calc(12px + env(safe-area-inset-right));
+  }
   .ck { border-radius: 14px; }
   .ck__compact { padding: 16px; gap: 12px; }
   .ck__icon { display: none; }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
+import MarketingNav from '../components/MarketingNav.jsx';
 import './HowItWorksPage.css';
 
 const FAQS = [
@@ -317,16 +318,7 @@ export default function HowItWorksPage() {
       />
 
       {/* Nav */}
-      <nav className="hiw-nav">
-        <a href="/" className="hiw-nav__brand">
-          <img src="/logo.png" alt="Prodomatix" className="hiw-nav__logo" />
-        </a>
-        <div className="hiw-nav__links">
-          <Link to="/how-it-works" className="hiw-nav__link">How it works</Link>
-          <Link to="/login"        className="hiw-nav__link">Sign in</Link>
-          <Link to="/register"     className="hiw-nav__cta">Get started free →</Link>
-        </div>
-      </nav>
+      <MarketingNav />
 
       {/* Hero */}
       <section className={'hiw-hero' + (heroIn ? ' is-visible' : '')} ref={heroRef}>

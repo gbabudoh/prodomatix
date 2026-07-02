@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
+import MarketingNav from '../components/MarketingNav.jsx';
 import './HowItWorksPage.css';
 
 const ROWS = [
@@ -204,18 +205,7 @@ export default function PlatformGuidePage() {
       />
 
       {/* Nav */}
-      <nav className="hiw-nav">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <Link to="/" className="hiw-nav__back">← Home</Link>
-          <Link to="/" className="hiw-nav__brand">
-            <img src="/logo.png" alt="Prodomatix" className="hiw-nav__logo" />
-          </Link>
-        </div>
-        <div className="hiw-nav__links">
-          <Link to="/login"    className="hiw-nav__link">Sign in</Link>
-          <Link to="/register" className="hiw-nav__cta">Get started free →</Link>
-        </div>
-      </nav>
+      <MarketingNav showBack showHowItWorks={false} />
 
       {/* Header */}
       <div className="hiw-guide-header">
