@@ -1,7 +1,13 @@
-// Admin-only platform management endpoints (stats, users, orders).
+// Admin-only platform management endpoints (stats, users, orders, insights).
 import { Router } from 'express';
 import { prisma } from '../db/prisma.ts';
 import { requireAuth, requireAdmin } from '../middleware/auth.ts';
+import {
+  completenessScore,
+  detectDuplicates,
+  rfmScore,
+  detectAnomalies,
+} from '../lib/algorithms.ts';
 
 const router = Router();
 router.use(requireAuth, requireAdmin);
@@ -75,6 +81,62 @@ router.get('/orders', async (_req, res) => {
       records: o._count.items
     }))
   );
+});
+
+// ── Algorithm-powered Insights ────────────────────────────────────────────────
+
+// GET /api/admin/quality — completeness score for every business record.
+router.get('/quality', async (_req, res) => {
+  const businesses = await prisma.business.findMany({ include: { contactPersons: true } });
+  const results = businesses
+    .map(b => ({ id: b.id, businessName: b.businessName, industry: b.industry, country: b.country, score: completenessScore(b as any) }))
+    .sort((a, b) => a.score - b.score); // worst first so admins fix lowest
+  res.json(results);
+});
+
+// GET /api/admin/duplicates — Jaccard-similarity duplicate pairs above threshold.
+router.get('/duplicates', async (_req, res) => {
+  const businesses = await prisma.business.findMany({ include: { contactPersons: true } });
+  const pairs = detectDuplicates(businesses as any, 0.4);
+  res.json(pairs);
+});
+
+// GET /api/admin/rfm — RFM segmentation of all users.
+router.get('/rfm', async (_req, res) => {
+  const users = await prisma.user.findMany({
+    where: { role: 'user' },
+    include: { purchases: { select: { total: true, createdAt: true } } },
+  });
+  const inputs = users.map(u => ({
+    userId:        u.id,
+    email:         u.email,
+    name:          u.name,
+    lastPurchase:  u.purchases.length ? u.purchases.slice().sort((x, y) => new Date(y.createdAt).getTime() - new Date(x.createdAt).getTime())[0]!.createdAt : null,
+    purchaseCount: u.purchases.length,
+    totalSpend:    u.purchases.reduce((s, p) => s + p.total, 0),
+  }));
+  res.json(rfmScore(inputs));
+});
+
+// GET /api/admin/anomalies — Z-score flagged users.
+router.get('/anomalies', async (_req, res) => {
+  const users = await prisma.user.findMany({
+    where: { role: 'user' },
+    include: {
+      purchases:  { select: { id: true } },
+      auditLogs:  { where: { action: 'download.file' }, select: { id: true } },
+    },
+  });
+  const now = Date.now();
+  const inputs = users.map(u => ({
+    userId:        u.id,
+    email:         u.email,
+    name:          u.name,
+    purchaseCount: u.purchases.length,
+    downloadCount: u.auditLogs.length,
+    accountAgeDays: Math.max(1, Math.round((now - new Date(u.createdAt).getTime()) / 86_400_000)),
+  }));
+  res.json(detectAnomalies(inputs, 2));
 });
 
 // GET /api/admin/audit — paginated audit log (newest first).

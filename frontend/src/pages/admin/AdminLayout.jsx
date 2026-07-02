@@ -10,8 +10,9 @@ const NAV_MAIN = [
 ];
 
 const NAV_SYSTEM = [
-  { to: '/admin/audit', icon: 'audit', label: 'Audit Log' },
-  { to: '/admin/security', icon: 'lock', label: 'Security' },
+  { to: '/admin/insights', icon: 'insights', label: 'Insights' },
+  { to: '/admin/audit',    icon: 'audit',    label: 'Audit Log' },
+  { to: '/admin/security', icon: 'lock',     label: 'Security' },
 ];
 
 const initials = (name = '') =>

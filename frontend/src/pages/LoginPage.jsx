@@ -18,7 +18,7 @@ export default function LoginPage() {
     setError(null); setBusy(true);
     try {
       await login(email, password);
-      navigate(location.state?.from || '/', { replace: true });
+      navigate(location.state?.from || '/browse', { replace: true });
     } catch (err) {
       setError(err.message);
     } finally { setBusy(false); }
@@ -28,7 +28,7 @@ export default function LoginPage() {
     setError(null); setBusy(true);
     try {
       await loginWithGoogle(credential);
-      navigate(location.state?.from || '/', { replace: true });
+      navigate(location.state?.from || '/browse', { replace: true });
     } catch (err) {
       setError(err.message); setBusy(false);
     }

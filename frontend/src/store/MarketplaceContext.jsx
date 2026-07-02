@@ -177,10 +177,15 @@ export function MarketplaceProvider({ children }) {
   }, [user]);
 
   // Load results whenever the query changes.
+  // When a search term is present, use TF-IDF ranked endpoint for relevance ordering.
   const reload = useCallback(async (qs) => {
     dispatch({ type: 'LOAD_START' });
     try {
-      const data = await api.get(`/businesses?${qs}`);
+      const params = new URLSearchParams(qs);
+      const search = params.get('search');
+      const data = search
+        ? await api.get(`/businesses/search?q=${encodeURIComponent(search)}`)
+        : await api.get(`/businesses?${qs}`);
       dispatch({ type: 'LOAD_OK', data });
     } catch (err) {
       dispatch({ type: 'LOAD_ERR', error: err.message });
@@ -191,8 +196,9 @@ export function MarketplaceProvider({ children }) {
     if (!user) return;
     reload(query);
     // Keep the browse URL shareable without disturbing other routes.
-    if (window.location.pathname === '/') {
-      window.history.replaceState(null, '', query ? `/?${query}` : '/');
+    const p = window.location.pathname;
+    if (p === '/browse' || p === '/') {
+      window.history.replaceState(null, '', query ? `/browse?${query}` : '/browse');
     }
   }, [user, query, reload]);
 

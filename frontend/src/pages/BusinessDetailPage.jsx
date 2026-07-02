@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { useMarketplace } from '../store/MarketplaceContext.jsx';
 import { moneyRound, priceOf, fmtNum } from '../lib/format.js';
@@ -99,10 +99,16 @@ export default function BusinessDetailPage() {
   const { state, toggleRow } = useMarketplace();
   const [biz, setBiz] = useState(null);
   const [error, setError] = useState(null);
+  const [similar, setSimilar] = useState([]);
 
   useEffect(() => {
     setBiz(null); setError(null);
     api.get(`/businesses/${id}`).then(setBiz).catch((e) => setError(e.message));
+  }, [id]);
+
+  useEffect(() => {
+    setSimilar([]);
+    api.get(`/businesses/${id}/similar`).then(setSimilar).catch(() => {});
   }, [id]);
 
   if (error) return (
@@ -255,6 +261,32 @@ export default function BusinessDetailPage() {
             )}
           </div>
         </div>
+
+        {/* ── Similar suppliers ──────────────────────────────────────────── */}
+        {similar.length > 0 && (
+          <div className="detail__similar">
+            <h2 className="detail__similar-title">Similar suppliers</h2>
+            <div className="similar-grid">
+              {similar.map(s => (
+                <Link key={s.id} to={`/business/${s.id}`} className="similar-card">
+                  <div className="similar-card__head">
+                    <IndustryDot industry={s.industry} />
+                    <span className="similar-card__name">{s.businessName}</span>
+                  </div>
+                  <div className="similar-card__meta">
+                    <CountryFlag country={s.country} />
+                    <span className="similar-card__industry">{s.industry}</span>
+                  </div>
+                  <div className="similar-card__foot">
+                    <span className="similar-card__match">{Math.round(s.similarity * 100)}% match</span>
+                    <span className="similar-card__price">{moneyRound(s.price)}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

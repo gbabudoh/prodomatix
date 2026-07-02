@@ -4,6 +4,7 @@ import { Prisma } from '../generated/prisma/client.ts';
 import { prisma } from '../db/prisma.ts';
 import { requireAuth, requireAdmin } from '../middleware/auth.ts';
 import { getOwnedBusinessIds, serializeBusiness } from '../lib/businesses.ts';
+import { tfidfRank, similarBusinesses, collaborativeRecommend } from '../lib/algorithms.ts';
 
 const router = Router();
 
@@ -117,6 +118,41 @@ router.get('/', requireAuth, async (req, res) => {
   });
 });
 
+// GET /api/businesses/search — TF-IDF ranked full-text search.
+router.get('/search', requireAuth, async (req, res) => {
+  const q = ((req.query.q as string) || '').trim();
+  if (!q) return res.json([]);
+
+  const all = await prisma.business.findMany({ include: { contactPersons: true } });
+  const isAdmin = req.user!.role === 'admin';
+  const ownedSet = new Set(await getOwnedBusinessIds(req.user!.id));
+
+  const ranked = tfidfRank(q, all as any[]).slice(0, 20);
+  res.json(ranked.map(b => ({ ...serializeBusiness(b as any, { owned: ownedSet.has(b.id), isAdmin }), score: b.score })));
+});
+
+// GET /api/businesses/recommended — collaborative filtering recommendations.
+router.get('/recommended', requireAuth, async (req, res) => {
+  const userId = req.user!.id;
+  const allPurchases = await prisma.purchase.findMany({
+    select: { userId: true, items: { select: { businessId: true } } },
+  });
+  const purchaseRecords = allPurchases.map(p => ({
+    userId: p.userId,
+    businessIds: p.items.map(i => i.businessId),
+  }));
+
+  const recommendedIds = collaborativeRecommend(userId, purchaseRecords, 5);
+  if (!recommendedIds.length) return res.json([]);
+
+  const businesses = await prisma.business.findMany({
+    where: { id: { in: recommendedIds } },
+    include: { contactPersons: true },
+  });
+  const ownedSet = new Set(await getOwnedBusinessIds(userId));
+  res.json(businesses.map(b => serializeBusiness(b, { owned: ownedSet.has(b.id), isAdmin: false })));
+});
+
 // GET /api/businesses/options — distinct facet values for the filter sidebar.
 router.get('/options', requireAuth, async (_req, res) => {
   const [types, inds, regs, ctrs] = await Promise.all([
@@ -143,10 +179,25 @@ router.get('/options', requireAuth, async (_req, res) => {
   });
 });
 
+// GET /api/businesses/:id/similar — cosine-similarity related suppliers.
+router.get('/:id/similar', requireAuth, async (req, res) => {
+  const id = Number(req.params.id);
+  const all = await prisma.business.findMany({ include: { contactPersons: true } });
+  const target = all.find(b => b.id === id);
+  if (!target) return res.status(404).json({ error: 'Business not found.' });
+
+  const isAdmin = req.user!.role === 'admin';
+  const ownedSet = new Set(await getOwnedBusinessIds(req.user!.id));
+  const similar = similarBusinesses(target as any, all as any[], 5);
+  res.json(similar.map(b => ({ ...serializeBusiness(b as any, { owned: ownedSet.has(b.id), isAdmin }), similarity: b.similarity })));
+});
+
 // GET /api/businesses/:id — single record (teaser unless owned/admin).
 router.get('/:id', requireAuth, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!id || isNaN(id)) return res.status(404).json({ error: 'Business not found.' });
   const b = await prisma.business.findUnique({
-    where: { id: Number(req.params.id) },
+    where: { id },
     include: { contactPersons: true }
   });
   if (!b) return res.status(404).json({ error: 'Business not found.' });

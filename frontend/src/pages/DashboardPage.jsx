@@ -122,7 +122,7 @@ export default function DashboardPage() {
             <div className="stat-card__num">{freeCredits}</div>
             <div className="stat-card__label">Free credits left</div>
             {freeCredits > 0 && (
-              <Link to="/" className="stat-card__action">Use now →</Link>
+              <Link to="/browse" className="stat-card__action">Use now →</Link>
             )}
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function DashboardPage() {
                 <span>credits available with no commitment</span>
               </div>
             )}
-            <Link to="/" className="btn btn--primary">
+            <Link to="/browse" className="btn btn--primary">
               Browse the marketplace →
             </Link>
           </div>
@@ -191,12 +191,12 @@ export default function DashboardPage() {
 
                 <div className="order-card__items">
                   {p.items.map((it) => (
-                    <div className="order-item" key={it.id}>
+                    <Link className="order-item" key={it.id} to={`/business/${it.business.id}`}>
                       <span className="order-item__name">{it.business.businessName}</span>
                       <span className="order-item__meta">
                         {it.business.industry} · {it.business.location} · {fmtNum(it.business.contacts)} contacts
                       </span>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 

@@ -22,6 +22,7 @@ import Users from './pages/admin/sections/Users.jsx';
 import Orders from './pages/admin/sections/Orders.jsx';
 import Audit from './pages/admin/sections/Audit.jsx';
 import Security from './pages/admin/sections/Security.jsx';
+import Insights from './pages/admin/sections/Insights.jsx';
 import { useAuth } from './store/AuthContext.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
 
@@ -42,11 +43,11 @@ function Shell({ children }) {
   );
 }
 
-// Root: marketing homepage for visitors, marketplace for authenticated users.
+// Root: marketing homepage for visitors; redirect logged-in users to the marketplace.
 function RootPage() {
   const { user, loading } = useAuth();
   if (loading) return <div className="full-loading">Loading…</div>;
-  if (user) return <Shell><BrowsePage /></Shell>;
+  if (user) return <Navigate to="/browse" replace />;
   return <HowItWorksPage />;
 }
 
@@ -65,6 +66,14 @@ export default function App() {
       <Route path="/admin/login" element={<AdminLoginPage />} />
 
       <Route path="/" element={<RootPage />} />
+      <Route
+        path="/browse"
+        element={
+          <ProtectedRoute>
+            <Shell><BrowsePage /></Shell>
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/business/:id"
         element={
@@ -111,6 +120,7 @@ export default function App() {
         <Route path="orders" element={<Orders />} />
         <Route path="audit" element={<Audit />} />
         <Route path="security" element={<Security />} />
+        <Route path="insights" element={<Insights />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
