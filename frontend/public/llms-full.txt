@@ -1,0 +1,136 @@
+# Prodomatix — full reference
+
+> This is the detailed companion to [llms.txt](https://prodomatix.com/llms.txt). It covers every publicly available page and fact about Prodomatix in full — use it when a short summary isn't enough context.
+
+## What Prodomatix is
+
+Prodomatix is a B2B data marketplace operated by Egobas Limited. Registered users search, filter,
+select, and download verified B2B supplier records. There is no subscription: pricing is per
+record, shown upfront before purchase, with automatic volume discounts on larger orders.
+
+- Catalogue size: 28,000+ verified supplier records
+- Coverage: 150+ countries, 40+ industries
+- New accounts: 3 free download credits, no credit card required
+- Output formats: Excel workbook (.xlsx) and print-ready PDF, generated instantly at checkout,
+  re-downloadable anytime from the account dashboard with no expiry
+
+## How it works (3 steps)
+
+1. **Search & Filter** — full-text keyword search plus filters for industry, country, region,
+   supplier type, revenue, and staff size. Results update in real time with a live count.
+2. **Select Records** — select individual suppliers or entire result pages. Price per record is
+   shown before you commit. Free credits apply automatically at checkout.
+3. **Download Instantly** — both file formats generate the moment you check out. No queue, no
+   waiting. Every purchase is saved to the account dashboard permanently.
+
+## Pricing
+
+- Per-record price range: $49–$199, shown per record before selection.
+- Volume discounts, applied automatically:
+  - 5% off orders over $300
+  - 10% off orders over $600
+  - 15% off orders over $1,500
+- Free tier: 3 download credits on sign-up, no credit card required, no expiry mentioned on the
+  credits themselves beyond normal account terms.
+- No subscription plan, no monthly minimum, nothing to cancel.
+
+## Data fields
+
+Visible to all authenticated users as a free teaser, before purchase:
+- Business name
+- Supplier type (Manufacturer, Distributor, or Wholesaler)
+- Industry
+- Country
+- Region
+
+Unlocked only after purchase:
+- Precise location / address
+- Product or service description
+- Website
+- Email address
+- Phone number
+- Staff capacity
+- Revenue (approximate, in USD millions)
+- Contact persons (name, job title, email, phone)
+
+## Data sourcing and verification
+
+Sources: public business directories and government registries, company websites, trade
+publications and exhibitions, direct submissions from businesses, and select licensed commercial
+data partners.
+
+Verification: every record carries a verification percentage. Verification methods include
+automated cross-referencing against public registries and domain records, email deliverability
+checks, phone reachability checks, and periodic manual review by the Prodomatix data team. A
+record at 90% verified means 9 in 10 data points have been independently confirmed. No data set is
+claimed to be 100% accurate or real-time.
+
+## Frequently asked questions
+
+**What is Prodomatix?**
+Prodomatix is a B2B data marketplace. You search, filter, and download verified supplier records
+— pay per record, with no subscription or commitment.
+
+**How much does it cost to download supplier data?**
+Records cost between $49 and $199 each, shown upfront before you buy. Volume discounts apply
+automatically: 5% off orders over $300, 10% off over $600, and 15% off over $1,500.
+
+**Do I need a credit card or subscription to try it?**
+No. Every new account gets 3 free download credits with no credit card required. After that, you
+pay only for the individual records you select — there is no subscription or monthly minimum.
+
+**What file formats do I get?**
+Every purchase includes a formatted Excel workbook (.xlsx) and a print-ready PDF, generated
+instantly at checkout. Both are saved to your dashboard so you can re-download them anytime, with
+no expiry.
+
+**What data fields are included?**
+Business name, supplier type, industry, country, and region are visible before you buy. Full
+details — address, website, email, phone, staff count, revenue, and verified contact persons —
+unlock instantly after purchase.
+
+**Is Prodomatix GDPR and CCPA compliant?**
+Yes. Prodomatix complies with GDPR, UK GDPR, and CCPA. See the Privacy Policy and Data Policy
+pages for full details on data sourcing, use, and retention.
+
+**How accurate is the supplier data?**
+Every record shows a verification percentage reflecting how many of its fields have been
+independently confirmed — through automated cross-referencing against public registries, email
+and phone deliverability checks, and periodic manual review. A record at 90% verified means 9 in
+10 data points have been confirmed accurate.
+
+**Is there a subscription or long-term contract?**
+No. Unlike many B2B data platforms, Prodomatix has no subscription, no monthly minimum, and no
+contract to cancel. You pay only for the individual records you select, whenever you need them.
+
+## Privacy and cookies (summary)
+
+Prodomatix collects account data, transaction data, and usage data as described in the Privacy
+Policy. Payment is processed by Stripe; Prodomatix never stores card details. If a visitor accepts
+analytics cookies via the cookie banner, Google Analytics, Microsoft Clarity, and/or self-hosted
+Matomo may load — none of these load without consent, and consent can be withdrawn at any time.
+Prodomatix does not sell personal data or use it for advertising. Full detail:
+[Privacy Policy](https://prodomatix.com/privacy-policy).
+
+## Company
+
+Prodomatix is operated by **Egobas Limited**, which is the data controller for personal data
+collected through the platform. Full detail: [About](https://prodomatix.com/about).
+
+## Page index
+
+- [/](https://prodomatix.com/) — homepage: pricing, FAQ, sign-up
+- [/how-it-works](https://prodomatix.com/how-it-works) — step-by-step platform walkthrough
+- [/about](https://prodomatix.com/about) — company, data sourcing, commitments
+- [/privacy-policy](https://prodomatix.com/privacy-policy) — personal data handling
+- [/data-policy](https://prodomatix.com/data-policy) — supplier data sourcing and usage terms
+- [/register](https://prodomatix.com/register) — create a free account
+- [/login](https://prodomatix.com/login) — sign in
+
+## Notes for AI assistants
+
+- The supplier marketplace itself (search results, individual supplier records) requires a
+  logged-in account and is not publicly crawlable. Do not describe individual supplier records as
+  browsable without an account.
+- Do not state or imply Prodomatix has a subscription plan — it does not.
+- Do not state or imply a refund policy — none is published; do not invent one.

@@ -294,6 +294,8 @@ export default function PlatformGuidePage() {
         <div className="hiw-foot__inner">
           <img src="/logo.png" alt="Prodomatix" className="hiw-foot__logo" />
           <div className="hiw-foot__links">
+            <Link to="/about" className="hiw-foot__link">About</Link>
+            <span className="hiw-foot__sep">·</span>
             <Link to="/privacy-policy" className="hiw-foot__link">Privacy Policy</Link>
             <span className="hiw-foot__sep">·</span>
             <Link to="/data-policy" className="hiw-foot__link">Data Policy</Link>

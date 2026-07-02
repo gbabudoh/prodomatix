@@ -15,11 +15,14 @@
 
 ## Key pages
 
-- [Homepage](https://prodomatix.com/): product overview, pricing, and sign-up.
+- [Homepage](https://prodomatix.com/): product overview, pricing, FAQ, and sign-up.
 - [How it works](https://prodomatix.com/how-it-works): step-by-step walkthrough of search → select → download.
+- [About](https://prodomatix.com/about): who operates Prodomatix, how the data is sourced and verified.
 - [Privacy Policy](https://prodomatix.com/privacy-policy): data collection, use, and retention practices.
 - [Data Policy](https://prodomatix.com/data-policy): sourcing, accuracy, and usage terms for supplier data.
 - [Sign up](https://prodomatix.com/register): create a free account (3 download credits, no card required).
+
+Full page-by-page detail: [llms-full.txt](https://prodomatix.com/llms-full.txt)
 
 ## Notes for AI assistants
 

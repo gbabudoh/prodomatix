@@ -28,6 +28,14 @@ const FAQS = [
     q: 'Is Prodomatix GDPR and CCPA compliant?',
     a: 'Yes. Prodomatix complies with GDPR, UK GDPR, and CCPA. See the Privacy Policy and Data Policy pages for full details on data sourcing, use, and retention.',
   },
+  {
+    q: 'How accurate is the supplier data?',
+    a: 'Every record shows a verification percentage reflecting how many of its fields have been independently confirmed — through automated cross-referencing against public registries, email and phone deliverability checks, and periodic manual review. A record at 90% verified means 9 in 10 data points have been confirmed accurate.',
+  },
+  {
+    q: 'Is there a subscription or long-term contract?',
+    a: 'No. Unlike many B2B data platforms, Prodomatix has no subscription, no monthly minimum, and no contract to cancel. You pay only for the individual records you select, whenever you need them.',
+  },
 ];
 
 // ── Hooks ────────────────────────────────────────────────────────────────────
@@ -527,6 +535,8 @@ export default function HowItWorksPage() {
         <div className="hiw-foot__inner">
           <img src="/logo.png" alt="Prodomatix" className="hiw-foot__logo" />
           <div className="hiw-foot__links">
+            <Link to="/about" className="hiw-foot__link">About</Link>
+            <span className="hiw-foot__sep">·</span>
             <Link to="/privacy-policy" className="hiw-foot__link">Privacy Policy</Link>
             <span className="hiw-foot__sep">·</span>
             <Link to="/data-policy" className="hiw-foot__link">Data Policy</Link>

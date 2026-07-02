@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Seo from '../components/Seo.jsx';
 
 const YEAR = new Date().getFullYear();
-const EFFECTIVE = 'July 1, 2026';
+const EFFECTIVE = 'July 2, 2026';
 
 function Section({ id, title, children }) {
   return (
@@ -162,6 +162,12 @@ export default function PrivacyPolicyPage() {
                 Contabo GmbH infrastructure. Data is stored on servers within the EU.
               </li>
               <li>
+                <strong>Analytics providers</strong> — if you consent to analytics cookies (see
+                "Cookies and tracking" below), anonymised usage data is shared with Google
+                Analytics and Microsoft Clarity. Matomo runs on our own infrastructure and does
+                not share data externally.
+              </li>
+              <li>
                 <strong>Law enforcement / legal process</strong> — we may disclose personal data
                 if required by law, court order, or to protect the rights and safety of our users
                 or the public.
@@ -184,10 +190,37 @@ export default function PrivacyPolicyPage() {
                 <strong>Session data</strong> — your current search filters and selections are
                 held in memory for the duration of your browser session only.
               </li>
+              <li>
+                <strong>Cookie preferences</strong> — your choices in our cookie consent banner
+                are stored in <code>localStorage</code> so we don't ask again on every visit.
+              </li>
             </ul>
             <p>
-              We do <strong>not</strong> use third-party advertising cookies, tracking pixels,
-              analytics platforms (such as Google Analytics), or social media trackers.
+              If you accept analytics cookies in the cookie banner, we load the following
+              third-party analytics tools. None of them load until you give consent, and you can
+              withdraw it at any time from the cookie banner ("Manage" → turn off Analytics),
+              which stops further tracking immediately:
+            </p>
+            <ul>
+              <li>
+                <strong>Google Analytics</strong> — aggregate usage analytics (pages visited,
+                traffic patterns). Operated by Google Ireland Limited; see
+                policies.google.com/privacy.
+              </li>
+              <li>
+                <strong>Microsoft Clarity</strong> — session recording and heatmaps, used to
+                understand how visitors use the platform and spot usability issues. Operated by
+                Microsoft; see privacy.microsoft.com/privacystatement.
+              </li>
+              <li>
+                <strong>Matomo</strong> — usage analytics hosted on our own infrastructure, not
+                shared with any third party.
+              </li>
+            </ul>
+            <p>
+              We do <strong>not</strong> use third-party advertising cookies, tracking pixels, or
+              social media trackers, and analytics data is never used for advertising or sold to
+              any third party.
             </p>
           </Section>
 
@@ -274,6 +307,8 @@ export default function PrivacyPolicyPage() {
         {/* Footer */}
         <footer className="policy-footer">
           <span>© {YEAR} Prodomatix · A subsidiary of Egobas Limited</span>
+          <span className="policy-footer__sep">·</span>
+          <Link to="/about" className="policy-footer__link">About</Link>
           <span className="policy-footer__sep">·</span>
           <Link to="/privacy-policy" className="policy-footer__link">Privacy Policy</Link>
           <span className="policy-footer__sep">·</span>

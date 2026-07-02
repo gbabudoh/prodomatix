@@ -11,6 +11,7 @@ import SuccessPage from './pages/SuccessPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import HowItWorksPage from './pages/HowItWorksPage.jsx';
 import PlatformGuidePage from './pages/PlatformGuidePage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
 import DataPolicyPage from './pages/DataPolicyPage.jsx';
 import VerifyEmailPage from './pages/VerifyEmailPage.jsx';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
@@ -62,6 +63,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/how-it-works"   element={<PlatformGuidePage />} />
+      <Route path="/about"          element={<AboutPage />} />
       <Route path="/verify-email"   element={<VerifyEmailPage />} />
       <Route path="/data-policy"    element={<DataPolicyPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

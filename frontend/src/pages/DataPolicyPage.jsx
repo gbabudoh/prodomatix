@@ -226,6 +226,8 @@ export default function DataPolicyPage() {
         <footer className="policy-footer">
           <span>© {YEAR} Prodomatix · A subsidiary of Egobas Limited</span>
           <span className="policy-footer__sep">·</span>
+          <Link to="/about" className="policy-footer__link">About</Link>
+          <span className="policy-footer__sep">·</span>
           <Link to="/privacy-policy" className="policy-footer__link">Privacy Policy</Link>
           <span className="policy-footer__sep">·</span>
           <Link to="/data-policy" className="policy-footer__link">Data Policy</Link>
