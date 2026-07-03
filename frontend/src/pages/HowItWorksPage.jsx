@@ -72,10 +72,10 @@ function useCounter(target, active, duration = 1800) {
 
 // ── Demo rows ─────────────────────────────────────────────────────────────────
 const ROWS = [
-  { name: 'Andes Coffee Works', ind: 'Food & Beverage', country: 'Colombia',      price: '$79'  },
-  { name: 'Atlas Steelworks',   ind: 'Construction',    country: 'United States', price: '$139' },
-  { name: 'AutoParts Direct',   ind: 'Automotive',      country: 'United States', price: '$59'  },
-  { name: 'Nordic Timber Co.',  ind: 'Manufacturing',   country: 'Sweden',        price: '$89'  },
+  { name: 'Andes Coffee Works', ind: 'Food & Beverage', country: 'Colombia',      price: '$0.50' },
+  { name: 'Atlas Steelworks',   ind: 'Construction',    country: 'United States', price: '$0.75' },
+  { name: 'AutoParts Direct',   ind: 'Automotive',      country: 'United States', price: '$1.00' },
+  { name: 'Nordic Timber Co.',  ind: 'Manufacturing',   country: 'Sweden',        price: '$1.20' },
 ];
 
 function DemoSearch() {
@@ -152,7 +152,7 @@ function DemoSelect() {
         <div className="hiw-demo__selbar">
           <div className="hiw-demo__selbar-l">
             <div><span className="hiw-demo__selnum">3</span> <span className="hiw-demo__sellbl">selected</span></div>
-            <div className="hiw-demo__seltotal">$277 estimated total</div>
+            <div className="hiw-demo__seltotal">$2.25 estimated total</div>
           </div>
           <span className="hiw-demo__checkout-btn">Continue to checkout →</span>
         </div>
