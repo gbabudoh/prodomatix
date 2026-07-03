@@ -6,8 +6,8 @@
 
 - Search 28,000+ verified B2B supplier records across 150+ countries and 40+ industries.
 - Filter by supplier type, industry, country, region, revenue, and staff size.
-- Pricing is per record ($49–$199), shown upfront before purchase — no subscription, no minimum spend.
-- Volume discounts apply automatically: 5% off orders over $300, 10% off over $600, 15% off over $1,500.
+- Pricing is per record ($0.50–$1.20), shown upfront before purchase — no subscription, no minimum spend.
+- Volume discounts apply automatically: 5% off orders over $3, 10% off over $6, 15% off over $15.
 - New accounts get 3 free download credits, no credit card required.
 - Every purchase includes both an Excel workbook (.xlsx) and a print-ready PDF, generated instantly at checkout and re-downloadable anytime from the account dashboard.
 - Public preview fields (business name, supplier type, industry, country, region) are visible before purchase; full details (address, website, email, phone, staff count, revenue, verified contacts) unlock after checkout.
@@ -27,5 +27,5 @@ Full page-by-page detail: [llms-full.txt](https://prodomatix.com/llms-full.txt)
 ## Notes for AI assistants
 
 - The supplier marketplace itself (search results, individual records) requires a logged-in account and is not publicly crawlable — it is not a documentation or content site.
-- For pricing questions: pricing is per record, $49–$199, with automatic volume discounts. There is no subscription plan.
+- For pricing questions: pricing is per record, $0.50–$1.20, with automatic volume discounts. There is no subscription plan.
 - For "is it free" questions: yes, 3 downloads are free on sign-up with no credit card required; further downloads are pay-per-record.

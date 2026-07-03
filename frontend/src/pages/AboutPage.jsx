@@ -68,7 +68,7 @@ export default function AboutPage() {
               instantly at checkout.
             </p>
             <p>
-              There's no subscription and no monthly minimum. Pricing is per record ($49–$199),
+              There's no subscription and no monthly minimum. Pricing is per record ($0.50–$1.20),
               shown upfront before you buy, with automatic volume discounts on larger orders. New
               accounts get 3 free download credits with no credit card required, so you can try the
               platform with zero risk.

@@ -11,7 +11,7 @@ const FAQS = [
   },
   {
     q: 'How much does it cost to download supplier data?',
-    a: 'Records cost between $49 and $199 each, shown upfront before you buy. Volume discounts apply automatically: 5% off orders over $300, 10% off over $600, and 15% off over $1,500.',
+    a: 'Records cost between $0.50 and $1.20 each, shown upfront before you buy. Volume discounts apply automatically: 5% off orders over $3, 10% off over $6, and 15% off over $15.',
   },
   {
     q: 'Do I need a credit card or subscription to try it?',
@@ -215,7 +215,7 @@ const STEPS = [
     num: '02', label: 'Select Records',
     heading: 'Pick exactly what you need — pay per record',
     body: 'Select individual suppliers or entire pages at once. Review pricing upfront before you commit — no subscriptions, no hidden fees, no minimum spend. Use your 3 free credits to try it with zero risk.',
-    bullets: ['Per-record transparent pricing', '3 free credits — no card required', 'Volume discounts from $300+', 'Remove items before checkout'],
+    bullets: ['Per-record transparent pricing', '3 free credits — no card required', 'Volume discounts from $3+', 'Remove items before checkout'],
     Demo: DemoSelect,
   },
   {
@@ -300,8 +300,8 @@ export default function HowItWorksPage() {
               offers: {
                 '@type': 'AggregateOffer',
                 priceCurrency: 'USD',
-                lowPrice: '49',
-                highPrice: '199',
+                lowPrice: '0.50',
+                highPrice: '1.20',
                 offerCount: '28000',
               },
             },
@@ -482,13 +482,13 @@ export default function HowItWorksPage() {
           </div>
           <div className="hiw-pricing__card hiw-pricing__card--paid">
             <div className="hiw-pricing__card-badge hiw-pricing__card-badge--blue">Pay as you go</div>
-            <div className="hiw-pricing__card-price">$49–$199</div>
+            <div className="hiw-pricing__card-price">$0.50–$1.20</div>
             <div className="hiw-pricing__card-label">per record</div>
             <p className="hiw-pricing__card-desc">Price shown per record before you select. Volume discounts applied automatically.</p>
             <div className="hiw-pricing__discounts">
-              <div className="hiw-pricing__discount"><strong>5% off</strong> orders over $300</div>
-              <div className="hiw-pricing__discount"><strong>10% off</strong> orders over $600</div>
-              <div className="hiw-pricing__discount"><strong>15% off</strong> orders over $1,500</div>
+              <div className="hiw-pricing__discount"><strong>5% off</strong> orders over $3</div>
+              <div className="hiw-pricing__discount"><strong>10% off</strong> orders over $6</div>
+              <div className="hiw-pricing__discount"><strong>15% off</strong> orders over $15</div>
             </div>
           </div>
         </div>

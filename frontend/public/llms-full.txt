@@ -25,11 +25,11 @@ record, shown upfront before purchase, with automatic volume discounts on larger
 
 ## Pricing
 
-- Per-record price range: $49–$199, shown per record before selection.
+- Per-record price range: $0.50–$1.20, shown per record before selection.
 - Volume discounts, applied automatically:
-  - 5% off orders over $300
-  - 10% off orders over $600
-  - 15% off orders over $1,500
+  - 5% off orders over $3
+  - 10% off orders over $6
+  - 15% off orders over $15
 - Free tier: 3 download credits on sign-up, no credit card required, no expiry mentioned on the
   credits themselves beyond normal account terms.
 - No subscription plan, no monthly minimum, nothing to cancel.
@@ -72,8 +72,8 @@ Prodomatix is a B2B data marketplace. You search, filter, and download verified 
 — pay per record, with no subscription or commitment.
 
 **How much does it cost to download supplier data?**
-Records cost between $49 and $199 each, shown upfront before you buy. Volume discounts apply
-automatically: 5% off orders over $300, 10% off over $600, and 15% off over $1,500.
+Records cost between $0.50 and $1.20 each, shown upfront before you buy. Volume discounts apply
+automatically: 5% off orders over $3, 10% off over $6, and 15% off over $15.
 
 **Do I need a credit card or subscription to try it?**
 No. Every new account gets 3 free download credits with no credit card required. After that, you
